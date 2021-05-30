@@ -43,7 +43,7 @@ void Read(char* tmp)	// Check 함수 먼저 읽으3
 		char a = Check(&temp[0]);	// temp의 주소를 넣어서 읽어온 ID 중 p번째 알파벳 3개를 Check 함수로 보내서 복원시킴 (KKX 을 보내면 K가 리턴됨)
 		str[p] = a;
 	}
-	
+
 	printf("ID : %s\n",str);
 
 //mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm	// 아래랑 같은맥락
