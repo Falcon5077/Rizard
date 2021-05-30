@@ -4,6 +4,7 @@
 #define MAX 255
 char* fName;
 
+// 피피티 순서에 해당하는 문자열 이차원으로 선언
 char* ITEM_NAME[] = {
     "BOMB",
     "POSTION",
@@ -22,13 +23,13 @@ unsigned char ITEMS_sort, ITEMS_count, ITEMS_num;
 
 // Description
 
-// 함수들
+// 규칙해소 함수들
 char CheckChar(char* len);
-unsigned short CheckShort(unsigned short* tmp);
+unsigned short CheckShort(unsigned short* tmp); 
 char ReadLen(void);
 unsigned short ReadShort();
 void ReadStr(char len, char* target);
-
+// 텍스트 출력 함수
 void USER_STATUS_fun(void);
 void ITEM_fun(void);
 
@@ -49,7 +50,39 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+// USER_STATUS 출력함수
+void USER_STATUS_fun(void) {
+    unsigned char tmpLen;		//문자열 길이를 받아올 변수
 
+    printf("*User STATUS*\n");
+
+    tmpLen = ReadLen();		// ID의 길이를 읽음
+    ReadStr(tmpLen, "ID");		// ID길이만큼 ID 읽음
+
+    tmpLen = ReadLen();		// 이름의 길이를 읽음
+    ReadStr(tmpLen, "NAME");		// 이름의 길이만큼 이름을 읽음
+
+    tmpLen = ReadLen();		// 성별을 읽고 출력함
+    if (tmpLen == 'M')
+        printf("GENDER: MALE\n");
+    if (tmpLen == 'F')
+        printf("GENDER: FEMALE\n");
+
+    tmpLen = ReadLen();		// 나이를 읽고 출력함
+    printf("AGE: %d\n", tmpLen);
+
+    tmpLen = ReadLen();		// HP를 읽고 출력함
+    printf("HP: %d\n", tmpLen);
+
+    tmpLen = ReadLen();		// MP를 읽고 출력함
+    printf("MP: %d\n", tmpLen);
+
+    unsigned short tmp = ReadShort();	// Coin을 읽고 출력함
+    printf("COIN: %d\n", tmp);
+
+    printf("\n");
+}
+// ITEMS 출력 함수
 void ITEM_fun(void) {
     ITEMS_sort = ReadLen();
     ITEMS_count = ReadLen();
@@ -98,36 +131,7 @@ void ITEM_fun(void) {
     printf("\n");
 }
 
-void USER_STATUS_fun(void) {
-    unsigned char tmpLen;		//문자열 길이를 받아올 변수
-
-    printf("*User STATUS*\n");
-
-    tmpLen = ReadLen();		// ID의 길이를 읽음
-    ReadStr(tmpLen, "ID");		// ID길이만큼 ID 읽음
-
-    tmpLen = ReadLen();		// 이름의 길이를 읽음
-    ReadStr(tmpLen, "NAME");		// 이름의 길이만큼 이름을 읽음
-
-    tmpLen = ReadLen();		// 성별을 읽고 출력함
-    if (tmpLen == 'M')
-        printf("GENDER: MALE\n");
-    if (tmpLen == 'F')
-        printf("GENDER: FEMALE\n");
-
-    tmpLen = ReadLen();		// 나이를 읽고 출력함
-    printf("AGE: %d\n", tmpLen);
-
-    tmpLen = ReadLen();		// HP를 읽고 출력함
-    printf("HP: %d\n", tmpLen);
-
-    tmpLen = ReadLen();		// MP를 읽고 출력함
-    printf("MP: %d\n", tmpLen);
-
-    unsigned short tmp = ReadShort();	// Coin을 읽고 출력함
-    printf("COIN: %d\n", tmp);
-}
-
+// 여기서부터는 언이가 코딩한 규칙해소 함수들
 char CheckChar(char* tmp)      // tmp 가 KKK 이면
 {
     char real;
