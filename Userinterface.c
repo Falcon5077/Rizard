@@ -44,7 +44,8 @@ int main(int argc,char  *argv[])
 	tmpLen = ReadLen("MP");
 	printf("MP: %d\n",tmpLen);
 
-	ReadShort();
+	unsigned short tmp = ReadShort();
+	printf("Coin: %d\n",tmp);
 }
 
 char ReadLen(char* target)	// Check 함수 먼저 읽으3
@@ -65,9 +66,6 @@ unsigned short ReadShort()
 {
 	unsigned short len[3];
 	unsigned short m_short;
-
-	fread(&m_short,sizeof(unsigned short),1,file);
-	printf("%d",m_short);
 
 	for(int t = 0; t<3; t++)
 	{
