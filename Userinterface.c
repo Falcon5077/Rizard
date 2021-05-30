@@ -74,7 +74,7 @@ char ReadLen()	// Check 함수 먼저 읽으
 	{
 		fread(&len[t],sizeof(unsigned char),1,file);	// ID길이 3개 읽어옴
 	}
-	m_len = Check(&len[0]);	// 읽어온 ID길이 3개를 Check 함수로 보내서 복원시킴 (667 을 보내면 6이 리턴됨)	
+	m_len = CheckChar(&len[0]);	// 읽어온 ID길이 3개를 Check 함수로 보내서 복원시킴 (667 을 보내면 6이 리턴됨)	
 
 	return m_len;
 }
@@ -104,7 +104,7 @@ void ReadStr(char len, char* target)
 		{
 			fread(&temp[k],sizeof(unsigned char),1,file);
 		}
-		char a = Check(&temp[0]);
+		char a = CheckChar(&temp[0]);
 		str[p] = a;
 	}
 	printf("%s: %s\n",target,str);
