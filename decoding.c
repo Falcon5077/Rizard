@@ -14,11 +14,22 @@ char* ITEM_NAME[] = {
 };
 // 파일포인터 선언
 FILE* fp;
-// ITEMS 변수들
+// USER_STATUS_fun 변수
+unsigned char tmpLen;
+// ITEMS_fun 변수
 unsigned char ITEMS_sort, ITEMS_count, ITEMS_num;
+// FRIENDS LIST 변수
+
+// Description
+
 // 함수들
+char CheckChar(char* len);
+unsigned short CheckShort(unsigned short* tmp);
 char ReadLen(void);
-char Check(char* len);
+unsigned short ReadShort();
+void ReadStr(char len, char* target);
+
+void USER_STATUS_fun(void);
 void ITEM_fun(void);
 
 // main 함수
@@ -31,8 +42,44 @@ int main(int argc, char* argv[]) {
 
     fName = argv[1];
     fp = fopen(fName, "rb");
+    // 유저 정보 출력
+    USER_STATUS_fun();
+    // 아이템 정보 출력
     ITEM_fun();
+
     return 0;
+}
+
+void USER_STATUS_fun(void) {
+    unsigned char tmpLen;		//문자열 길이를 받아올 변수
+
+    printf("*User STATUS*\n");
+
+    tmpLen = ReadLen();		// ID의 길이를 읽음
+    ReadStr(tmpLen, "ID");		// ID길이만큼 ID 읽음
+
+    tmpLen = ReadLen();		// 이름의 길이를 읽음
+    ReadStr(tmpLen, "NAME");		// 이름의 길이만큼 이름을 읽음
+
+    tmpLen = ReadLen();		// 성별을 읽고 출력함
+    if (tmpLen == 'M')
+        printf("GENDER: MALE\n");
+    if (tmpLen == 'F')
+        printf("GENDER: FEMALE\n");
+
+    tmpLen = ReadLen();		// 나이를 읽고 출력함
+    printf("AGE: %d\n", tmpLen);
+
+    tmpLen = ReadLen();		// HP를 읽고 출력함
+    printf("HP: %d\n", tmpLen);
+
+    tmpLen = ReadLen();		// MP를 읽고 출력함
+    printf("MP: %d\n", tmpLen);
+
+    unsigned short tmp = ReadShort();	// Coin을 읽고 출력함
+    printf("COIN: %d\n", tmp);
+
+    printf("\n");
 }
 
 void ITEM_fun(void) {
@@ -44,15 +91,15 @@ void ITEM_fun(void) {
     if (ITEMS_sort == 0) {
         if ((ITEMS_count >= 1) && (ITEMS_count <= 4)) { // ITEMS 갯수가 1이상 4이하일때
             char ITEMS[6];
-            int T_num = ReadLen(), n = 6;		// T_num에 아이템의 유무를 1과 0으로 표기한 2진수를 10진수로 변환한 값으로 선언 후 초기화
+            int T_num = ReadLen(), n = 6;
             while (n != 0) {
-                ITEMS[--n] = T_num % 2;	// 10진수를 2진수로 변환하여 ITEMS 배열에 저장, [5--] 형태로 뒤에서부터 저장
-                T_num /= 2; 
+                ITEMS[--n] = T_num % 2;
+                T_num /= 2;
             }
             for (int i = 0; i < 6; i++) {
-                if (ITEMS[i] != 0) { 
-                    ITEMS_num = ReadLen(); // 갯수를 불러와서 ITEMS_num에 저장 후 
-                    printf("%s : %d\n", ITEM_NAME[i], ITEMS_num); // 이름과 함께 출력
+                if (ITEMS[i] != 0) {
+                    ITEMS_num = ReadLen();
+                    printf("%s : %d\n", ITEM_NAME[i], ITEMS_num);
                 }
                 else
                     continue;
@@ -73,31 +120,17 @@ void ITEM_fun(void) {
     else if (ITEMS_sort == 1) {
         char ITEMS[ITEMS_count * 2];    // 배열의 크기를 총 갯수 * 2로 고정
         for (int i = 0; i < ITEMS_count * 2; i++)
-            ITEMS[i] = ReadLen(); // ITEMS배열에 파일에 저장된 아이템 개수 값을  규칙해소와 함께 저장
+            ITEMS[i] = ReadLen(); 
 
         for (int j = 0; j < ITEMS_count * 2; j++) {
-            printf("%s : ", ITEM_NAME[ITEMS[j]]); // 아이템 이름과 함께 
-            printf("%d\n", ITEMS[++j]); // 아이템 개수 출력
+            printf("%s : ", ITEM_NAME[ITEMS[j]]);
+            printf("%d\n", ITEMS[++j]);
         }
     }
     printf("\n");
 }
 
-// 여기서부터는 언이 규칙해소 함수 참고하였음
-char ReadLen()	// Check 함수 먼저 읽으3
-{
-    char len[3];
-    unsigned char m_len;
-
-    for (int t = 0; t < 3; t++)
-        fread(&len[t], sizeof(unsigned char), 1, fp);	// ID길이 3개 읽어옴
-
-    m_len = Check(&len[0]);	// 읽어온 ID길이 3개를 Check 함수로 보내서 복원시킴 (667 을 보내면 6이 리턴됨)	
-
-    return m_len;
-}
-
-char Check(char* tmp)      // tmp 가 KKK 이면
+char CheckChar(char* tmp)      // tmp 가 KKK 이면
 {
     char real;
 
@@ -125,4 +158,73 @@ char Check(char* tmp)      // tmp 가 KKK 이면
     }
 
     return real;
+}
+
+unsigned short CheckShort(unsigned short* tmp)		// tmp 가 KKK 이면
+{
+    unsigned short real;
+
+    if (tmp[0] != tmp[1])	// tmp[0] K랑 tmp[1] K가 같은지 비교
+    {
+        if (tmp[0] != tmp[2])	// 0이랑 1이 틀다면 0이랑 2가 같은지 비교
+        {
+            if (tmp[1] == tmp[2])	// 같다면 1이랑 2, 2개가 같기때문에
+            {
+                real = tmp[1];	// real에 tmp중 1이나 2 아무거나 넣어서 리턴	(XKK) 의 경우
+            }
+            else
+            {
+                printf("셋다 틀림 ");
+            }
+        }
+        else	// 0이랑 2가 같다면 real에 0을 넣어서 리턴 (KXK) 의 경우
+        {
+            real = tmp[0];
+        }
+    }
+    else
+    {
+        real = tmp[0];	// 0이랑 1이 같으니 (KKX)의 경우
+    }
+
+    return real;
+}
+
+unsigned short ReadShort() {
+    unsigned short len[3];
+    unsigned short m_short;
+
+    for (int t = 0; t < 3; t++)
+        fread(&len[t], sizeof(unsigned short), 1, fp);
+
+    m_short = CheckShort(&len[0]);
+
+    return m_short;
+}
+
+char ReadLen() {	// Check 함수 먼저 읽으3 {
+    char len[3];
+    unsigned char m_len;
+
+    for (int t = 0; t < 3; t++)
+        fread(&len[t], sizeof(unsigned char), 1, fp);	// ID길이 3개 읽어옴
+
+    m_len = CheckChar(&len[0]);	// 읽어온 ID길이 3개를 Check 함수로 보내서 복원시킴 (667 을 보내면 6이 리턴됨)	
+
+    return m_len;
+}
+
+void ReadStr(char len, char* target) {
+    unsigned char str[255] = " ";
+
+    for (int p = 0; p < len; p++) {
+        char temp[3];
+
+        for (int k = 0; k < 3; k++)
+            fread(&temp[k], sizeof(unsigned char), 1, fp);
+
+        char a = CheckChar(&temp[0]);
+        str[p] = a;
+    }
+    printf("%s: %s\n", target, str);
 }
