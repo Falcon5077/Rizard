@@ -6,6 +6,7 @@ char ReadLen(char* target);
 unsigned short ReadShort();
 void ReadStr(char len,char* target);
 char Check(char *len);
+unsigned short CheckShort(unsigned short* tmp);
 
 char* fName;
 FILE *file;
@@ -62,19 +63,19 @@ char ReadLen(char* target)	// Check 함수 먼저 읽으3
 
 unsigned short ReadShort()
 {
-	char len[3];
+	unsigned short len[3];
 	unsigned short m_short;
 
 	fread(&m_short,sizeof(unsigned short),1,file);
 	printf("%d",m_short);
-/*
+
 	for(int t = 0; t<3; t++)
 	{
 		fread(&len[t],sizeof(unsigned short),1,file);
 	}
-	m_short = Check(&len[0]);
+	m_short = CheckShort(&len[0]);
 
-	return m_short;*/
+	return m_short;
 }
 
 void ReadStr(char len, char* target)
@@ -98,6 +99,36 @@ void ReadStr(char len, char* target)
 char Check(char* tmp)		// tmp 가 KKK 이면
 {
 	char real;
+
+     if(tmp[0] != tmp[1])	// tmp[0] K랑 tmp[1] K가 같은지 비교
+     {
+         if(tmp[0] != tmp[2])	// 0이랑 1이 틀다면 0이랑 2가 같은지 비교
+         {
+             if(tmp[1] == tmp [2])	// 같다면 1이랑 2, 2개가 같기때문에
+             {
+                 real = tmp[1];	// real에 tmp중 1이나 2 아무거나 넣어서 리턴	(XKK) 의 경우
+             }
+             else
+             {
+                 printf("셋다 틀림");
+             }
+         }
+         else	// 0이랑 2가 같다면 real에 0을 넣어서 리턴 (KXK) 의 경우
+         {
+             real = tmp[0];
+         }
+     }
+     else
+     {
+         real = tmp[0];	// 0이랑 1이 같으니 (KKX)의 경우
+     }
+
+	 return real;
+}
+
+unsigned short CheckShort(unsigned short* tmp)		// tmp 가 KKK 이면
+{
+	unsigned short real;
 
      if(tmp[0] != tmp[1])	// tmp[0] K랑 tmp[1] K가 같은지 비교
      {
