@@ -14,21 +14,8 @@ char* ITEM_NAME[] = {
 };
 // 파일포인터 선언
 FILE* fp;
-// USER_STATUS 변수들
-unsigned char ID_length, Name_length, HP, MP;
-char ID[MAX], NAME[MAX];
-char GENDER, age;
-unsigned short Coin;
 // ITEMS 변수들
 unsigned char ITEMS_sort, ITEMS_count, ITEMS_num;
-// FRIENDS LIST
-char FRIEND_ID_length, FRIEND_Name_length;
-char gender, age;
-char ID[MAX], NAME[MAX];
-// Description
-
-// 변수들
-unsigned char tmpLen;
 // 함수들
 char ReadLen(void);
 char Check(char* len);
@@ -57,15 +44,15 @@ void ITEM_fun(void) {
     if (ITEMS_sort == 0) {
         if ((ITEMS_count >= 1) && (ITEMS_count <= 4)) { // ITEMS 갯수가 1이상 4이하일때
             char ITEMS[6];
-            int T_num = ReadLen(), n = 6;
+            int T_num = ReadLen(), n = 6;		// T_num에 아이템의 유무를 1과 0으로 표기한 2진수를 10진수로 변환한 값으로 선언 후 초기화
             while (n != 0) {
-                ITEMS[--n] = T_num % 2;
-                T_num /= 2;
+                ITEMS[--n] = T_num % 2;	// 10진수를 2진수로 변환하여 ITEMS 배열에 저장, [5--] 형태로 뒤에서부터 저장
+                T_num /= 2; 
             }
             for (int i = 0; i < 6; i++) {
-                if (ITEMS[i] != 0) {
-                    ITEMS_num = ReadLen();
-                    printf("%s : %d\n", ITEM_NAME[i], ITEMS_num);
+                if (ITEMS[i] != 0) { 
+                    ITEMS_num = ReadLen(); // 갯수를 불러와서 ITEMS_num에 저장 후 
+                    printf("%s : %d\n", ITEM_NAME[i], ITEMS_num); // 이름과 함께 출력
                 }
                 else
                     continue;
@@ -86,16 +73,17 @@ void ITEM_fun(void) {
     else if (ITEMS_sort == 1) {
         char ITEMS[ITEMS_count * 2];    // 배열의 크기를 총 갯수 * 2로 고정
         for (int i = 0; i < ITEMS_count * 2; i++)
-            ITEMS[i] = ReadLen(); 
+            ITEMS[i] = ReadLen(); // ITEMS배열에 파일에 저장된 아이템 개수 값을  규칙해소와 함께 저장
 
         for (int j = 0; j < ITEMS_count * 2; j++) {
-            printf("%s : ", ITEM_NAME[ITEMS[j]]);
-            printf("%d\n", ITEMS[++j]);
+            printf("%s : ", ITEM_NAME[ITEMS[j]]); // 아이템 이름과 함께 
+            printf("%d\n", ITEMS[++j]); // 아이템 개수 출력
         }
     }
     printf("\n");
 }
 
+// 여기서부터는 언이 규칙해소 함수 참고하였음
 char ReadLen()	// Check 함수 먼저 읽으3
 {
     char len[3];
