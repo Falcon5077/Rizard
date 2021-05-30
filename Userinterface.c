@@ -5,51 +5,6 @@
 char* fName;
 FILE *file;
 
-char ReadLen()	// Check 함수 먼저 읽으
-{
-	char len[3];
-	unsigned char m_len;
-
-	for(int t = 0; t < 3; t++)
-	{
-		fread(&len[t],sizeof(unsigned char),1,file);	// ID길이 3개 읽어옴
-	}
-	m_len = Check(&len[0]);	// 읽어온 ID길이 3개를 Check 함수로 보내서 복원시킴 (667 을 보내면 6이 리턴됨)	
-
-	return m_len;
-}
-
-unsigned short ReadShort()
-{
-	unsigned short len[3];
-	unsigned short m_short;
-
-	for(int t = 0; t<3; t++)
-	{
-		fread(&len[t],sizeof(unsigned short),1,file);
-	}
-	m_short = CheckShort(&len[0]);
-
-	return m_short;
-}
-
-void ReadStr(char len, char* target)
-{
-	unsigned char str[255] = " ";
-
-	for(int p = 0; p < len; p++)
-	{
-		char temp[3];
-		for(int k = 0; k < 3; k++)
-		{
-			fread(&temp[k],sizeof(unsigned char),1,file);
-		}
-		char a = Check(&temp[0]);
-		str[p] = a;
-	}
-	printf("%s: %s\n",target,str);
-}
-
 char CheckChar(char* tmp)	// tmp 가 KKK 이면
 {
 	char real;
@@ -108,6 +63,51 @@ unsigned short CheckShort(unsigned short* tmp)		// tmp 가 KKK 이면
 	}
 
 	 return real;
+}
+
+char ReadLen()	// Check 함수 먼저 읽으
+{
+	char len[3];
+	unsigned char m_len;
+
+	for(int t = 0; t < 3; t++)
+	{
+		fread(&len[t],sizeof(unsigned char),1,file);	// ID길이 3개 읽어옴
+	}
+	m_len = Check(&len[0]);	// 읽어온 ID길이 3개를 Check 함수로 보내서 복원시킴 (667 을 보내면 6이 리턴됨)	
+
+	return m_len;
+}
+
+unsigned short ReadShort()
+{
+	unsigned short len[3];
+	unsigned short m_short;
+
+	for(int t = 0; t<3; t++)
+	{
+		fread(&len[t],sizeof(unsigned short),1,file);
+	}
+	m_short = CheckShort(&len[0]);
+
+	return m_short;
+}
+
+void ReadStr(char len, char* target)
+{
+	unsigned char str[255] = " ";
+
+	for(int p = 0; p < len; p++)
+	{
+		char temp[3];
+		for(int k = 0; k < 3; k++)
+		{
+			fread(&temp[k],sizeof(unsigned char),1,file);
+		}
+		char a = Check(&temp[0]);
+		str[p] = a;
+	}
+	printf("%s: %s\n",target,str);
 }
 
 int main(int argc,char  *argv[])
