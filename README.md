@@ -1,3 +1,5 @@
+## 아이템 교칙 원리
+
 {BOMB, POTION, CURE, BOOK, SHIELD, CANNON}
 이게 피피티 순서라서 이거 기준으로 삼음
 
