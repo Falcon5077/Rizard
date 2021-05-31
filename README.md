@@ -1,7 +1,7 @@
 # 아이템 규칙 원리
 
-{BOMB, POTION, CURE, BOOK, SHIELD, CANNON}
-이게 피피티 순서라서 이거 기준으로 삼음
+ - {BOMB, POTION, CURE, BOOK, SHIELD, CANNON}
+(이게 피피티 순서라서 이거 기준으로 삼음)
 
 무조건 들어가는 바이트
 순서 인지하는 char형 배열 sort 1바이트
