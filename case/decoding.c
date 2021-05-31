@@ -4,11 +4,7 @@
 #define MAX 255
 char* fName;
 
-<<<<<<< HEAD
-// ««««∆º º¯º≠ø° «ÿ¥Á«œ¥¬ πÆ¿⁄ø≠ ¿Ã¬˜ø¯¿∏∑Œ º±æ
-=======
 // ÌîºÌîºÌã∞ ÏàúÏÑúÏóê Ìï¥ÎãπÌïòÎäî Î¨∏ÏûêÏó¥ Ïù¥Ï∞®ÏõêÏúºÎ°ú ÏÑ†Ïñ∏
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
 char* ITEM_NAME[] = {
     "BOMB",
     "POSTION",
@@ -17,19 +13,6 @@ char* ITEM_NAME[] = {
     "SHIELD",
     "CANNON"
 };
-<<<<<<< HEAD
-// ∆ƒ¿œ∆˜¿Œ≈Õ º±æ
-FILE* fp;
-// USER_STATUS_fun ∫Øºˆ
-unsigned char tmpLen;
-// ITEMS_fun ∫Øºˆ
-unsigned char ITEMS_sort, ITEMS_count, ITEMS_num;
-// FRIENDS LIST ∫Øºˆ
-
-// Description
-
-// ±‘ƒ¢«ÿº“ «‘ºˆµÈ
-=======
 // ÌååÏùºÌè¨Ïù∏ÌÑ∞ ÏÑ†Ïñ∏
 FILE* fp;
 // USER_STATUS_fun Î≥ÄÏàò
@@ -41,25 +24,16 @@ unsigned char ITEMS_sort, ITEMS_count, ITEMS_num;
 // Description
 
 // Í∑úÏπôÌï¥ÏÜå Ìï®ÏàòÎì§
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
 char CheckChar(char* len);
-unsigned short CheckShort(unsigned short* tmp); 
+unsigned short CheckShort(unsigned short* tmp);
 char ReadLen(void);
 unsigned short ReadShort();
 void ReadStr(char len, char* target);
-<<<<<<< HEAD
-// ≈ÿΩ∫∆Æ √‚∑¬ «‘ºˆ
-void USER_STATUS_fun(void);
-void ITEM_fun(void);
-
-// main «‘ºˆ
-=======
 // ÌÖçÏä§Ìä∏ Ï∂úÎ†• Ìï®Ïàò
 void USER_STATUS_fun(void);
 void ITEM_fun(void);
 
 // main Ìï®Ïàò
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
 int main(int argc, char* argv[]) {
     if (argc != 2)
     {
@@ -69,34 +43,13 @@ int main(int argc, char* argv[]) {
 
     fName = argv[1];
     fp = fopen(fName, "rb");
-<<<<<<< HEAD
-    // ¿Ø¿˙ ¡§∫∏ √‚∑¬
-    USER_STATUS_fun();
-    // æ∆¿Ã≈€ ¡§∫∏ √‚∑¬
-=======
     // Ïú†Ï†Ä Ï†ïÎ≥¥ Ï∂úÎ†•
     USER_STATUS_fun();
     // ÏïÑÏù¥ÌÖú Ï†ïÎ≥¥ Ï∂úÎ†•
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
     ITEM_fun();
 
     return 0;
 }
-<<<<<<< HEAD
-// USER_STATUS √‚∑¬«‘ºˆ
-void USER_STATUS_fun(void) {
-    unsigned char tmpLen;		//πÆ¿⁄ø≠ ±Ê¿Ã∏¶ πﬁæ∆ø√ ∫Øºˆ
-
-    printf("*User STATUS*\n");
-
-    tmpLen = ReadLen();		// ID¿« ±Ê¿Ã∏¶ ¿–¿Ω
-    ReadStr(tmpLen, "ID");		// ID±Ê¿Ã∏∏≈≠ ID ¿–¿Ω
-
-    tmpLen = ReadLen();		// ¿Ã∏ß¿« ±Ê¿Ã∏¶ ¿–¿Ω
-    ReadStr(tmpLen, "NAME");		// ¿Ã∏ß¿« ±Ê¿Ã∏∏≈≠ ¿Ã∏ß¿ª ¿–¿Ω
-
-    tmpLen = ReadLen();		// º∫∫∞¿ª ¿–∞Ì √‚∑¬«‘
-=======
 // USER_STATUS Ï∂úÎ†•Ìï®Ïàò
 void USER_STATUS_fun(void) {
     unsigned char tmpLen;		//Î¨∏ÏûêÏó¥ Í∏∏Ïù¥Î•º Î∞õÏïÑÏò¨ Î≥ÄÏàò
@@ -110,24 +63,11 @@ void USER_STATUS_fun(void) {
     ReadStr(tmpLen, "NAME");		// Ïù¥Î¶ÑÏùò Í∏∏Ïù¥ÎßåÌÅº Ïù¥Î¶ÑÏùÑ ÏùΩÏùå
 
     tmpLen = ReadLen();		// ÏÑ±Î≥ÑÏùÑ ÏùΩÍ≥† Ï∂úÎ†•Ìï®
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
     if (tmpLen == 'M')
         printf("GENDER: MALE\n");
     if (tmpLen == 'F')
         printf("GENDER: FEMALE\n");
 
-<<<<<<< HEAD
-    tmpLen = ReadLen();		// ≥™¿Ã∏¶ ¿–∞Ì √‚∑¬«‘
-    printf("AGE: %d\n", tmpLen);
-
-    tmpLen = ReadLen();		// HP∏¶ ¿–∞Ì √‚∑¬«‘
-    printf("HP: %d\n", tmpLen);
-
-    tmpLen = ReadLen();		// MP∏¶ ¿–∞Ì √‚∑¬«‘
-    printf("MP: %d\n", tmpLen);
-
-    unsigned short tmp = ReadShort();	// Coin¿ª ¿–∞Ì √‚∑¬«‘
-=======
     tmpLen = ReadLen();		// ÎÇòÏù¥Î•º ÏùΩÍ≥† Ï∂úÎ†•Ìï®
     printf("AGE: %d\n", tmpLen);
 
@@ -138,30 +78,19 @@ void USER_STATUS_fun(void) {
     printf("MP: %d\n", tmpLen);
 
     unsigned short tmp = ReadShort();	// CoinÏùÑ ÏùΩÍ≥† Ï∂úÎ†•Ìï®
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
     printf("COIN: %d\n", tmp);
 
     printf("\n");
 }
-<<<<<<< HEAD
-// ITEMS √‚∑¬ «‘ºˆ
-=======
 // ITEMS Ï∂úÎ†• Ìï®Ïàò
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
 void ITEM_fun(void) {
     ITEMS_sort = ReadLen();
     ITEMS_count = ReadLen();
     printf("*ITEMS*\n");
 
-<<<<<<< HEAD
-    // sort∞° 1¿Ã∏È º¯º≠¥Î∑Œ
-    if (ITEMS_sort == 0) {
-        if ((ITEMS_count >= 1) && (ITEMS_count <= 4)) { // ITEMS ∞πºˆ∞° 1¿ÃªÛ 4¿Ã«œ¿œ∂ß
-=======
     // sortÍ∞Ä 1Ïù¥Î©¥ ÏàúÏÑúÎåÄÎ°ú
     if (ITEMS_sort == 0) {
         if ((ITEMS_count >= 1) && (ITEMS_count <= 4)) { // ITEMS Í∞ØÏàòÍ∞Ä 1Ïù¥ÏÉÅ 4Ïù¥ÌïòÏùºÎïå
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
             char ITEMS[6];
             int T_num = ReadLen(), n = 6;
             while (n != 0) {
@@ -177,36 +106,22 @@ void ITEM_fun(void) {
                     continue;
             }
         }
-<<<<<<< HEAD
-        else if ((ITEMS_count >= 5) && (ITEMS_count <= 6)) { // ITEMS ∞πºˆ∞° 5¿ÃªÛ 6¿Ã«œ¿œ∂ß
-            unsigned char ITEMS[6];   // πËø≠¿« ≈©±‚¥¬ 6¿∏∑Œ ∞Ì¡§
-            for (int i = 0; i < 6; i++) {
-                ITEMS[i] = ReadLen();   // ¬˜∑ ¥Î∑Œ ±‘ƒ¢«ÿº“
-                if (ITEMS[i] == 0) // ITEMSπËø≠ø° ¿˙¿Âµ» ºˆ∞° 0¿Ã∏È √‚∑¬ x
-=======
         else if ((ITEMS_count >= 5) && (ITEMS_count <= 6)) { // ITEMS Í∞ØÏàòÍ∞Ä 5Ïù¥ÏÉÅ 6Ïù¥ÌïòÏùºÎïå
             unsigned char ITEMS[6];   // Î∞∞Ïó¥Ïùò ÌÅ¨Í∏∞Îäî 6ÏúºÎ°ú Í≥†Ï†ï
             for (int i = 0; i < 6; i++) {
                 ITEMS[i] = ReadLen();   // Ï∞®Î°ÄÎåÄÎ°ú Í∑úÏπôÌï¥ÏÜå
                 if (ITEMS[i] == 0) // ITEMSÎ∞∞Ïó¥Ïóê Ï†ÄÏû•Îêú ÏàòÍ∞Ä 0Ïù¥Î©¥ Ï∂úÎ†• x
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
                     continue;
                 printf("%s : %d\n", ITEM_NAME[i], ITEMS[i]);
             }
         }
     }
 
-<<<<<<< HEAD
-    // sort∞° 0¿Ã∏È º¯º≠¥Î∑Œx
-    else if (ITEMS_sort == 1) {
-        unsigned char ITEMS[ITEMS_count * 2];    // πËø≠¿« ≈©±‚∏¶ √— ∞πºˆ * 2∑Œ ∞Ì¡§
-=======
     // sortÍ∞Ä 0Ïù¥Î©¥ ÏàúÏÑúÎåÄÎ°úx
     else if (ITEMS_sort == 1) {
-        char ITEMS[ITEMS_count * 2];    // Î∞∞Ïó¥Ïùò ÌÅ¨Í∏∞Î•º Ï¥ù Í∞ØÏàò * 2Î°ú Í≥†Ï†ï
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
+        unsigned char ITEMS[ITEMS_count * 2];    // Î∞∞Ïó¥Ïùò ÌÅ¨Í∏∞Î•º Ï¥ù Í∞ØÏàò * 2Î°ú Í≥†Ï†ï
         for (int i = 0; i < ITEMS_count * 2; i++)
-            ITEMS[i] = ReadLen(); 
+            ITEMS[i] = ReadLen();
 
         for (int j = 0; j < ITEMS_count * 2; j++) {
             printf("%s : ", ITEM_NAME[ITEMS[j]]);
@@ -216,27 +131,6 @@ void ITEM_fun(void) {
     printf("\n");
 }
 
-<<<<<<< HEAD
-// ø©±‚º≠∫Œ≈Õ¥¬ æ¿Ã∞° ƒ⁄µ˘«— ±‘ƒ¢«ÿº“ «‘ºˆµÈ
-char CheckChar(char* tmp)      // tmp ∞° KKK ¿Ã∏È
-{
-    char real;
-
-    if (tmp[0] != tmp[1])   // tmp[0] K∂˚ tmp[1] K∞° ∞∞¿∫¡ˆ ∫Ò±≥
-    {
-        if (tmp[0] != tmp[2])   // 0¿Ã∂˚ 1¿Ã ∆≤¥Ÿ∏È 0¿Ã∂˚ 2∞° ∞∞¿∫¡ˆ ∫Ò±≥
-        {
-            if (tmp[1] == tmp[2])   // ∞∞¥Ÿ∏È 1¿Ã∂˚ 2, 2∞≥∞° ∞∞±‚∂ßπÆø°
-            {
-                real = tmp[1];   // realø° tmp¡ﬂ 1¿Ã≥™ 2 æ∆π´∞≈≥™ ≥÷æÓº≠ ∏Æ≈œ   (XKK) ¿« ∞ÊøÏ
-            }
-            else
-            {
-                printf("º¬¥Ÿ ∆≤∏≤");
-            }
-        }
-        else   // 0¿Ã∂˚ 2∞° ∞∞¥Ÿ∏È realø° 0¿ª ≥÷æÓº≠ ∏Æ≈œ (KXK) ¿« ∞ÊøÏ
-=======
 // Ïó¨Í∏∞ÏÑúÎ∂ÄÌÑ∞Îäî Ïñ∏Ïù¥Í∞Ä ÏΩîÎî©Ìïú Í∑úÏπôÌï¥ÏÜå Ìï®ÏàòÎì§
 char CheckChar(char* tmp)      // tmp Í∞Ä KKK Ïù¥Î©¥
 {
@@ -256,43 +150,18 @@ char CheckChar(char* tmp)      // tmp Í∞Ä KKK Ïù¥Î©¥
             }
         }
         else   // 0Ïù¥Îûë 2Í∞Ä Í∞ôÎã§Î©¥ realÏóê 0ÏùÑ ÎÑ£Ïñ¥ÏÑú Î¶¨ÌÑ¥ (KXK) Ïùò Í≤ΩÏö∞
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
         {
             real = tmp[0];
         }
     }
     else
     {
-<<<<<<< HEAD
-        real = tmp[0];   // 0¿Ã∂˚ 1¿Ã ∞∞¿∏¥œ (KKX)¿« ∞ÊøÏ
-=======
         real = tmp[0];   // 0Ïù¥Îûë 1Ïù¥ Í∞ôÏúºÎãà (KKX)Ïùò Í≤ΩÏö∞
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
     }
 
     return real;
 }
 
-<<<<<<< HEAD
-unsigned short CheckShort(unsigned short* tmp)		// tmp ∞° KKK ¿Ã∏È
-{
-    unsigned short real;
-
-    if (tmp[0] != tmp[1])	// tmp[0] K∂˚ tmp[1] K∞° ∞∞¿∫¡ˆ ∫Ò±≥
-    {
-        if (tmp[0] != tmp[2])	// 0¿Ã∂˚ 1¿Ã ∆≤¥Ÿ∏È 0¿Ã∂˚ 2∞° ∞∞¿∫¡ˆ ∫Ò±≥
-        {
-            if (tmp[1] == tmp[2])	// ∞∞¥Ÿ∏È 1¿Ã∂˚ 2, 2∞≥∞° ∞∞±‚∂ßπÆø°
-            {
-                real = tmp[1];	// realø° tmp¡ﬂ 1¿Ã≥™ 2 æ∆π´∞≈≥™ ≥÷æÓº≠ ∏Æ≈œ	(XKK) ¿« ∞ÊøÏ
-            }
-            else
-            {
-                printf("º¬¥Ÿ ∆≤∏≤ ");
-            }
-        }
-        else	// 0¿Ã∂˚ 2∞° ∞∞¥Ÿ∏È realø° 0¿ª ≥÷æÓº≠ ∏Æ≈œ (KXK) ¿« ∞ÊøÏ
-=======
 unsigned short CheckShort(unsigned short* tmp)		// tmp Í∞Ä KKK Ïù¥Î©¥
 {
     unsigned short real;
@@ -311,18 +180,13 @@ unsigned short CheckShort(unsigned short* tmp)		// tmp Í∞Ä KKK Ïù¥Î©¥
             }
         }
         else	// 0Ïù¥Îûë 2Í∞Ä Í∞ôÎã§Î©¥ realÏóê 0ÏùÑ ÎÑ£Ïñ¥ÏÑú Î¶¨ÌÑ¥ (KXK) Ïùò Í≤ΩÏö∞
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
         {
             real = tmp[0];
         }
     }
     else
     {
-<<<<<<< HEAD
-        real = tmp[0];	// 0¿Ã∂˚ 1¿Ã ∞∞¿∏¥œ (KKX)¿« ∞ÊøÏ
-=======
         real = tmp[0];	// 0Ïù¥Îûë 1Ïù¥ Í∞ôÏúºÎãà (KKX)Ïùò Í≤ΩÏö∞
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
     }
 
     return real;
@@ -340,24 +204,14 @@ unsigned short ReadShort() {
     return m_short;
 }
 
-<<<<<<< HEAD
-char ReadLen() {	// Check «‘ºˆ ∏’¿˙ ¿–¿∏3 {
-=======
 char ReadLen() {	// Check Ìï®Ïàò Î®ºÏ†Ä ÏùΩÏúº3 {
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
     char len[3];
     unsigned char m_len;
 
     for (int t = 0; t < 3; t++)
-<<<<<<< HEAD
-        fread(&len[t], sizeof(unsigned char), 1, fp);	// ID±Ê¿Ã 3∞≥ ¿–æÓø»
-
-    m_len = CheckChar(&len[0]);	// ¿–æÓø¬ ID±Ê¿Ã 3∞≥∏¶ Check «‘ºˆ∑Œ ∫∏≥ªº≠ ∫πø¯Ω√≈¥ (667 ¿ª ∫∏≥ª∏È 6¿Ã ∏Æ≈œµ )	
-=======
         fread(&len[t], sizeof(unsigned char), 1, fp);	// IDÍ∏∏Ïù¥ 3Í∞ú ÏùΩÏñ¥Ïò¥
 
     m_len = CheckChar(&len[0]);	// ÏùΩÏñ¥Ïò® IDÍ∏∏Ïù¥ 3Í∞úÎ•º Check Ìï®ÏàòÎ°ú Î≥¥ÎÇ¥ÏÑú Î≥µÏõêÏãúÌÇ¥ (667 ÏùÑ Î≥¥ÎÇ¥Î©¥ 6Ïù¥ Î¶¨ÌÑ¥Îê®)	
->>>>>>> 4c2dc3c42589375277838d8ad9eb93ea90218c0b
 
     return m_len;
 }
