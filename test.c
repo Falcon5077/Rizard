@@ -52,45 +52,44 @@ int main(int argc, char* argv[])
 	fwrite(&coin, 1, sizeof(unsigned short), file);
 	fwrite(&coin, 1, sizeof(unsigned short), file);
 
-	len = 1;
+	len = 1; // sort == 1
 	fwrite(&len, 1, sizeof(unsigned char), file);
 	fwrite(&len, 1, sizeof(unsigned char), file);
 	fwrite(&len, 1, sizeof(unsigned char), file);
 
-	len = 3;
+	len = 3; // 아이템 갯수
 	fwrite(&len, 1, sizeof(unsigned char), file);
 	fwrite(&len, 1, sizeof(unsigned char), file);
 	fwrite(&len, 1, sizeof(unsigned char), file);
 
-	len = 5;
-	fwrite(&len, 1, sizeof(char), file);
-	fwrite(&len, 1, sizeof(char), file);
-	fwrite(&len, 1, sizeof(char), file);
-
-	len = 5;
-	fwrite(&len, 1, sizeof(char), file);
-	fwrite(&len, 1, sizeof(char), file);
-	fwrite(&len, 1, sizeof(char), file);
-
-	len = 1;
+	len = 3; // 아이템유무를 이진수로 나타낸걸 10진수 변환한 값
 	fwrite(&len, 1, sizeof(unsigned char), file);
 	fwrite(&len, 1, sizeof(unsigned char), file);
 	fwrite(&len, 1, sizeof(unsigned char), file);
 
-	len = 1;
+	len = 25; // 순서대로 갯수
 	fwrite(&len, 1, sizeof(unsigned char), file);
 	fwrite(&len, 1, sizeof(unsigned char), file);
 	fwrite(&len, 1, sizeof(unsigned char), file);
 
-	len = 2;
+	len = 5; // 순서대로 갯수
 	fwrite(&len, 1, sizeof(unsigned char), file);
 	fwrite(&len, 1, sizeof(unsigned char), file);
 	fwrite(&len, 1, sizeof(unsigned char), file);
 
-	len = 3;
+	len = 50; // 순서대로 갯수
 	fwrite(&len, 1, sizeof(unsigned char), file);
 	fwrite(&len, 1, sizeof(unsigned char), file);
 	fwrite(&len, 1, sizeof(unsigned char), file);
 
+	len = 1; // 순서대로 갯수
+	fwrite(&len, 1, sizeof(unsigned char), file);
+	fwrite(&len, 1, sizeof(unsigned char), file);
+	fwrite(&len, 1, sizeof(unsigned char), file);
+
+	len = 135; // 순서대로 갯수
+	fwrite(&len, 1, sizeof(unsigned char), file);
+	fwrite(&len, 1, sizeof(unsigned char), file);
+	fwrite(&len, 1, sizeof(unsigned char), file);
 	return 0;
 }

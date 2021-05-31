@@ -119,7 +119,7 @@ void ITEM_fun(void) {
 
     // sort가 0이면 순서대로x
     else if (ITEMS_sort == 1) {
-        char ITEMS[ITEMS_count * 2];    // 배열의 크기를 총 갯수 * 2로 고정
+        unsigned char ITEMS[ITEMS_count * 2];    // 배열의 크기를 총 갯수 * 2로 고정
         for (int i = 0; i < ITEMS_count * 2; i++)
             ITEMS[i] = ReadLen(); 
 
