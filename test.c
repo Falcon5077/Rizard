@@ -4,7 +4,7 @@
 
 int main(int argc,char  *argv[])
 {
-	char* fileName = "db.txt";
+	char* fileName = "db.bin";
 	unsigned char str;
 
 	char len;
