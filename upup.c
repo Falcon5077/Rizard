@@ -17,20 +17,35 @@ void checkout_buff(unsigned char *buff, unsigned char *script) { //파일로 부
 		count++;
 		if(strA != script[k]) {
 			if(strA > 47 && strA < 58) { //입력된 값이 숫자인경우
-				if(count - 1 == 1) buff[x++] = strA - 20; //같은 갯수가 1개인경우 ASCII 값에서 20빼기
-				if(count - 1 == 2) buff[x++] = strA - 10; //같은 갯수가 2개인경우 ASCII값에서 10빼기 
+				if(count - 1 == 1) {
+				  for(int i = 0; i < 3; i++)
+				  		buff[x++] = strA - 20; //같은 갯수가 1개인경우 ASCII 값에서 20빼기
+				}
+				if(count - 1 == 2)
+					for(int i = 0; i < 3; i++)
+						buff[x++] = strA - 10; //같은 갯수가 2개인경우 ASCII값에서 10빼기 
 				if(count - 1 >= 3) { //반복되는 숫자가 세개 이상일 경우
-					buff[x++] = strA - 10; //ASCII값 10빼고 갯수 저장
-					buff[x++] = count-1;
+					for(int i = 0; i < 3; i++)
+						buff[x++] = strA - 10; //ASCII값 10빼고 갯수 저장
+					for(int i = 0; i < 3; i++)
+						buff[x++] = count-1;
 				}
 			}else {		//숫자가 아니라 문자인 경우
 				if(count-1 >= 3) { //같은 문자가 3개이상인 경우
+					for(int i = 0; i < 3; i++)
 						buff[x++] = strA + 32;	//아스키값 +32해서 소문자로 변경
+					for(int i = 0; i < 3; i++)
 						buff[x++] = count-1;		//count는 현재 갯수보다 1크므로 -1해서 대입
 				}
-				if(count - 1 == 2) buff[x++] = strA + 32; //같은 문자가 두개인 경우 소문자 한개 저장
-				if(count - 2 == 1) buff[x++] = strA; //같은 문자가 하나인 경우 그대로 저장
+				if(count - 1 == 2) {
+					for(int i = 0; i < 3; i++)
+						buff[x++] = strA + 32; //같은 문자가 두개인 경우 소문자 한개 저장
 				}
+				if(count - 2 == 1) {
+				 	for(int i = 0; i < 3; i++)
+						buff[x++] = strA; //같은 문자가 하나인 경우 그대로 저장
+				}
+			}
 			count = 0;
 			k--;
 		}
