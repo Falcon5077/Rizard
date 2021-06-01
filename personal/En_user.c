@@ -12,6 +12,14 @@ unsigned char HP;
 unsigned char MP;
 unsigned short coin;
 
+char* Items[] = {
+	"BOMB",
+	"POSTION",
+	"CURE",
+	"BOOK",
+	"SHIELD",
+	"CANNON"
+};
 FILE *fp2;
 
 void WriteChar(unsigned char len)
@@ -25,8 +33,11 @@ void WriteShort(unsigned short s_len)
 		fwrite(&s_len,1,sizeof(unsigned short),fp2);
 }
 
-void WriteStr(unsigned char len,unsigned char* str)
+void WriteStr(unsigned char* str)
 {
+	unsigned char len = strlen(str);
+	WriteChar(len);
+
 	for(int i = 0; i < len; i++)
 	{
 		for(int j = 0; j < 3; j++)
@@ -42,36 +53,35 @@ int main(int argc,char *argv[])
 	fp2 = fopen("q.bin","wb");
 	
 	char buffer[1000];
+	char* item_save[6];
 	char* line;
 	int a = 0;
 	int count = 0;
+	int count2 = 0;
 	
 	while(!feof(fp)){
 		line = fgets(buffer,1000,fp);
 		if(strstr(line,"*")){		// a 1 user 2 item 3 ally 4 dis
-			if( a == 1)
+			printf("%d 번째 필드! \n",++a);
+			if(a == 4)
 				break;
-			printf("%d 번째 필드 \n",++a);
 			continue;
 		}	
-		if(a ==1){
+
+		if(a ==1){			
 			char* value = strstr(line," ");
-			count++;
 			if(value != NULL){
 				value[strlen(value)-1] = '\0';
+				printf("%d",++count);
 				switch(count)
 				{
 					case 1:
 						id = &value[1];
-						idLen = strlen(id);
-						WriteChar(idLen);
-						WriteStr(idLen,id);
+						WriteStr(id);
 						break;
 					case 2:
 						name = &value[1];
-						nameLen = strlen(name);
-						WriteChar(nameLen);
-						WriteStr(nameLen,name);
+						WriteStr(name);
 						break;
 					case 3:
 						if(value[1] == 'M')
@@ -98,11 +108,37 @@ int main(int argc,char *argv[])
 						break;
 					case 7:
 						coin = atoi(&value[1]);
-						WriteShort(coin);
+						WriteShort(coin);	
 						break;
 				}	
 			}
-		}		
+			
+		}
+		else if(a == 2)
+		{
+			char* value2 = strstr(line," ");
+			if(value2 != NULL){
+				++count2;
+				value2[strlen(value2)-1] = '\0';
+				printf("%d : %s",count2,value2);
+				switch(count2)
+				{
+					case 1:						
+						printf("1 : %s",&value2[1]);
+						break;
+					case 2:
+						printf("2 : %s",&value2[1]);
+						break;
+					case 3:
+						printf("3 : %s",&value2[1]);
+						break;
+					case 4:
+						printf("4 : %s",&value2[1]);
+						break;
+				}
+			}
+		}
+		
 	}
 
 	fclose(fp);
