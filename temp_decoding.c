@@ -57,8 +57,8 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
-// USER_STATUS 출력함수
-void USER_STATUS_fun(void) {
+// USER_STATUS 정보를 파일에 쓰는 함수
+void Write_USER_STATUS(void) {
     unsigned char tmpLen;		//문자열 길이를 받아올 변수
     fprintf(fp2, "*USER STATUS*\n");
 
@@ -88,8 +88,8 @@ void USER_STATUS_fun(void) {
 
     fprintf(fp2, "\n");
 }
-// ITEMS 출력 함수
-void ITEM_fun(void) {
+// ITEMS 정보를 파일에 쓰는 함수
+void Write_ITEMS(void) {
     ITEMS_sort = ReadLen();
     ITEMS_count = ReadLen();
     fprintf(fp2, "*ITEMS*\n");
