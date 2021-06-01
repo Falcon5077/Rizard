@@ -94,7 +94,7 @@ void ITEM_fun(void) {
     ITEMS_count = ReadLen();
     fprintf(fp2, "*ITEMS*\n");
 
-    // sort가 1이면 순서대로
+    // sort가 0이면 순서대로
     if (ITEMS_sort == 0) {
         if ((ITEMS_count >= 1) && (ITEMS_count <= 4)) { // ITEMS 갯수가 1이상 4이하일때
             char ITEMS[6];
@@ -123,7 +123,7 @@ void ITEM_fun(void) {
         }
     }
 
-    // sort가 0이면 순서대로x
+    // sort가 1이면 순서대로x
     else if (ITEMS_sort == 1) {
         char ITEMS[ITEMS_count * 2];    // 배열의 크기를 총 갯수 * 2로 고정
         for (int i = 0; i < ITEMS_count * 2; i++)
