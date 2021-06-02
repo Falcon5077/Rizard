@@ -35,13 +35,14 @@ void Read_data(info* pFRIEND){
 
 void Write_data(info *pFRIEND){
 
+	WriteChar(NUM);		// 동맹수
+
 	for (int i = 0; i < NUM; i++)	{		// 동맹 수 만큼 반복
 		
 		pFRIEND->ID_len = strlen(pFRIEND->ID);		// 아이디 길이 구하기
 		pFRIEND->NAME_len = strlen(pFRIEND->NAME);		// 이름 길이 구하기
   	
-		WriteChar(NUM);		// 동맹수
-		
+			
 		WriteChar(pFRIEND->ID_len);		// 아이디 길이
 		WriteStr(pFRIEND->ID_len, pFRIEND->ID);		// 아이디
 
