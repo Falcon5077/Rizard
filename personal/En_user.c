@@ -72,7 +72,6 @@ int main(int argc,char *argv[])
 			char* value = strstr(line," ");
 			if(value != NULL){
 				value[strlen(value)-1] = '\0';
-				printf("%d",++count);
 				switch(count)
 				{
 					case 1:
@@ -116,24 +115,18 @@ int main(int argc,char *argv[])
 		}
 		else if(a == 2)
 		{
-			char* value2 = strstr(line," ");
-			if(value2 != NULL){
+			char* field = strtok(line,":");
+			char* value2 = strtok(NULL," ");
+			if(value2 != NULL && field != NULL){
 				++count2;
 				value2[strlen(value2)-1] = '\0';
-				printf("%d : %s",count2,value2);
 				switch(count2)
 				{
 					case 1:						
-						printf("1 : %s",&value2[1]);
-						break;
 					case 2:
-						printf("2 : %s",&value2[1]);
-						break;
 					case 3:
-						printf("3 : %s",&value2[1]);
-						break;
 					case 4:
-						printf("4 : %s",&value2[1]);
+						//printf("필드이름 : %s / 값 : %s\n",field,&value2[0]);
 						break;
 				}
 			}
