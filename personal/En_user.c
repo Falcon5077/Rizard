@@ -49,8 +49,13 @@ void WriteStr(unsigned char* str)
 
 int main(int argc,char *argv[])
 {
-	FILE* fp = fopen("test_sample1.txt","rb");
-	fp2 = fopen("q.bin","wb");
+	if(argc != 2)
+	{
+		printf("Error....\n");
+		exit(1);
+	}
+	FILE* fp = fopen(argv[1],"rb");
+	fp2 = fopen("db.bin","wb");
 	
 	char buffer[1000];
 	char* item_save[6];
@@ -67,12 +72,12 @@ int main(int argc,char *argv[])
 				break;
 			continue;
 		}	
-
 		if(a ==1){			
 			char* value = strstr(line," ");
 			if(value != NULL){
-				value[strlen(value)-1] = '\0';
-				switch(count)
+				value[strlen(value)-1] = '\0';	
+
+				switch(++count)
 				{
 					case 1:
 						id = &value[1];
@@ -133,7 +138,6 @@ int main(int argc,char *argv[])
 		}
 		
 	}
-
 	fclose(fp);
 	
 	return 0;
