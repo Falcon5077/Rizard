@@ -50,17 +50,14 @@ void checkout_same_line(unsigned char *buff) {
 	for(int i = 0; i < height; i++) { //for문이 두번 딱 돌면서 2차원 배열로 바꿔준다~ 이말이야
 		for(int k = 0; k < len; k++) { //반복하면서 \n나올때 까지 temp2에 값을 저장
 			temp2[k] = buff[x];	
-			if(buff[x] == '\n') { //temp2 x번째에 \n이 들어갔다.
+			if(buff[k] == '\n') { //temp2 x번째에 \n이 들어갔다.
 				temp2[++k] = '\0'; //temp2마지막 위치에 null포인터 저장
 				break; //안쪽 for문 탈출
-			}
-			x++; //개행문자가 없으면 위의 if문은 그냥 지나쳐오고 buff다음위치 값을 temp에 대입하기 위해 x++해준다
+			} else x++; //개행문자가 없으면 위의 if문은 그냥 지나쳐오고 buff다음위치 값을 temp에 대입하기 위해 x++해준다
 		}
 		strcpy(temp[i], temp2); //break한 이후 temp[i]에 temp2의 값을 복사한다.
+		x++;
 	}
-
-	for(int i = 0; i < 5; i++) //출력해서 temp에 제대로 들어갔는지 확인
-		printf("%s", temp[i]);
 
 	for(int i = 0; i < height; i++) { //반복문이 돌면서 i번째 temp값과 그보다 1큰 k값으로 두 값을 비교한다.
 		for(int k = i+1; k < height; k++) {
@@ -93,7 +90,7 @@ void insert_file(unsigned char *buff) { //파일.... 넣을게...
 }
 
 int main(int argv, char *argc[]) {
-	unsigned char script[1000] = "ABCDE\nABCDE\nABCDE\n33333AAAAA\nJEON"; //이게 테스팅용으로 들어가는 값임 (원본값을 여기다 대입하면 되용)
+	unsigned char script[1000] = "ABCDE\nABCDE\nDDDE\n33333AAAAA\nJEON"; //이게 테스팅용으로 들어가는 값임 (원본값을 여기다 대입하면 되용)
 	unsigned char buff[3000]; //원본값을 변환시킨 값이 들어가는 버퍼(일단 세번씩 반복하는거니 최악의 경우를 대비해서 크기 3000잡아놈
 
 	checkout_buff(buff, script);
