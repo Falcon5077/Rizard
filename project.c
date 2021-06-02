@@ -1,113 +1,159 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 typedef struct {
+	unsigned char I_length;
+	unsigned char N_length;
 	char ID[255];
 	char name[255];
 	char gender;
 	char age;
+	char buffer [1000];
+	char buffer_n[1000];
+	char buffer_g[3];
+	char buffer_age[3];
 }info; // 동맹 구조체
 
-info FRIEND[100];
-int num = 0; // 동맹수
+info FRIEND[100]; //동맹 배열
 
-void READ() {
-	FILE *fp = fopen("project.bin","rb"); // 오류가 난 파일 열기
-	char buffer[1000] = {0,}; // bin에서 받는 ID정보 저장용
-	char buffer_n[1000] = {0,}; // bin에서 받는 name정보 저장용
-	char buffer_g[3] = {0,}; // bin에서 받는 gender정보 저장용
-	char buffer_age[3];
-	char compare[3]; // 비교변수
-	int index = 0; // 인덱스 위치에 compare끼리 비교후 넣어 줄 위치
+char* fName;
+FILE *file;
 
-	// ID 정보 입력
-	fread(buffer, sizeof(char),21,fp); // 파일 읽고
-	for(int i = 0; buffer[i] != 0; i = i + 3) { //ex KK9
-		compare[0] = buffer[i]; //K
-		compare[1] = buffer[i+1]; //K
-		compare[2] = buffer[i+2]; //9
-		
-		if(compare[0]==compare[1]) {
-			FRIEND[0].ID[index] = compare[0];
-			index++;
-		} // K == K 이므로 FRIEND[0].ID[index] 위치에 넣어주고 index++
-		
-		else if(compare[0]==compare[2]) {
-			FRIEND[0].ID[index] = compare[0];
-			index++;
+unsigned char num; // 동맹수
+
+char checkChar(char *tmp)
+{
+	char real;
+
+	if(tmp[0] != tmp[1])
+	{
+		if(tmp[0] != tmp[2])
+		{
+			if(tmp[1] == tmp[2]) 
+			{
+				real = tmp[1];
+			}
+			else 
+			{
+				printf("셋다 틀림 ");
+				real = tmp[2];
+			}
 		}
-
-		else {
-			FRIEND[0].ID[index] = compare[1];
-			index++;
-		}
-	} // 어디가 바뀌었는지 확인하자!
-
-	// name 정보 입력
-	index = 0;
-	fread(buffer_n, sizeof(char), 15, fp);
-	for(int i = 0; buffer_n[i] != 0; i = i+3) { //ID 정보와 설명같음
-		compare[0] = buffer_n[i];
-		compare[1] = buffer_n[i+1];
-		compare[2] = buffer_n[i+2];
-
-		if(compare[0]==compare[1]) {
-			FRIEND[0].name[index] = compare[0];
-			index++;
-		}
-
-		else if(compare[0]==compare[2]) {
-			FRIEND[0].name[index] = compare[0];
-			index++;
-		}
-		
-		else {
-			FRIEND[0].name[index] = compare[1];
-			index++;
+		else
+		{
+			real = tmp[0];
 		}
 	}
-
-	fread(buffer_g, sizeof(char), 3, fp); // ex) M!M
-	if(buffer_g[0]==buffer_g[1]) { // M은 !와 다르므로 if문 통과
-		FRIEND[0].gender = buffer_g[0]; 
+	else
+	{
+		real = tmp[0];
 	}
+	return real;
+}
 
-	else if(buffer_g[0]==buffer_g[2]) { //M과 M을 비교해서 같으므로
-		FRIEND[0].gender = buffer_g[0];
-	} // gender는 M이다.
+char ReadLen()
+{
+	char len[3];
+	unsigned char m_len;
 
-	else {
-		FRIEND[0].gender = buffer_g[1];
+	for(int t = 0; t < 3; t++)
+	{
+		fread(&len[t],sizeof(unsigned char),1,file);
 	}
+	m_len = checkChar(&len[0]);
+	
+	return m_len;
+}
 
-	// 나이 정보 저장
-	fread(buffer_age, sizeof(char), 3 ,fp); 
-	if(buffer_age[0]==buffer_age[1]) { // 성별 설명과 같다.
-		FRIEND[0].age = buffer_age[0];
+void Checkstr_I(char *buffer,int F_num) {
+	char tmp[3];
+	int index = 0;
+	for(int i = 0; buffer[i] !=0; i = i + 3) {
+			tmp[0] = buffer[i];
+			tmp[1] = buffer[i+1];
+			tmp[2] = buffer[i+2];
+			FRIEND[F_num].ID[index]= checkChar(tmp);
+			index++;
 	}
+} //ID buffer에 저장된 데이터를 추출한다.
 
-	else if(buffer_age[0]==buffer_age[2]) {
-		FRIEND[0].age = buffer_age[0];
+void Checkstr_N(char *buffer,int F_num) {
+	char tmp[3];
+	int index = 0;
+	for(int i =0; buffer[i] !=0; i = i+3) {
+		tmp[0] = buffer[i];
+		tmp[1] = buffer[i+1];
+		tmp[2] = buffer[i+2];
+		FRIEND[F_num].name[index] = checkChar(tmp);
+		index++;
 	}
+} //name buffer에 저장된 데이터를 추출한다.
 
-	else {
-		FRIEND[0].age = buffer_age[1];
+void FRIEND_READ() { // 인코더 파일 읽어오는 함수
+	num = ReadLen(); // 동맹수를 읽어 온다.
+	int x = 0;
+	for(int i = 0; i < num; i++) {
+		FRIEND[i].I_length = ReadLen();
+		fread(FRIEND[i].buffer,sizeof(char), FRIEND[i].I_length * 3 ,file);
+		FRIEND[i].N_length = ReadLen();
+		fread(FRIEND[i].buffer_n,sizeof(char), FRIEND[i].N_length *3 ,file);
+		fread(FRIEND[i].buffer_g,sizeof(char),3,file);
+		fread(FRIEND[i].buffer_age,sizeof(char),3,file);
+	}	
+}
+
+void FRIEND_SAVE() { // buffer에 있는 정보를 걸러서 출력하고자하는 구조체에 저장
+	for(int i = 0; i < 3; i++) {
+		Checkstr_I(FRIEND[i].buffer,i);
+		Checkstr_N(FRIEND[i].buffer_n,i);
+		FRIEND[i].gender = checkChar(FRIEND[i].buffer_g);
+		FRIEND[i].age = checkChar(FRIEND[i].buffer_age);	
 	}
 }
 
-void print() { // 정보출력
-	printf("ID : %s\n",FRIEND[0].ID);
-	printf("NAME : %s\n",FRIEND[0].name);
-	if(FRIEND[0].gender == 'M') {
-		printf("GENDER : MALE\n");
+void print() {
+	printf("*FRIENDS LIST*\n");
+	for(int i = 0; i< num; i++) {
+		printf("ID : %s\n",FRIEND[i].ID);
+		printf("NAME : %s\n",FRIEND[i].name);
+		if(FRIEND[i].gender=='M') {
+			printf("GENDER : MALE\n");
+		}
+		else {
+			printf("GENDER : FEMALE\n");
+		}
+		printf("AGE : %d\n\n",FRIEND[i].age);
 	}
-	else {
-		printf("GENDER : FEMALE\n");
-	}
-	printf("AGE : %hd\n",FRIEND[0].age);
 }
 
-int main() {
-	READ();
-	print();	
+void fprint(char *file) {
+	FILE *fp = fopen(file,"w");
+	fprintf(fp,"*FRIENDS LIST*\n");
+	for(int i = 0; i<num; i++) {
+		fprintf(fp,"FRIEND%d ID: %s\n",i+1,FRIEND[i].ID);
+		fprintf(fp,"FRIEND%d NAME: %s\n",i+1,FRIEND[i].name);
+		if(FRIEND[i].gender=='M') {
+			fprintf(fp,"FRIEND%d GENDER: MALE\n",i+1);
+		}
+		else {
+			fprintf(fp,"FRIEND%d GENDER: FEMALE\n",i+1);
+		}
+		fprintf(fp,"FRIEND%d AGE : %d\n\n",i+1,FRIEND[i].age);
+	}
+}
+
+int main(int argc,char *argv[]) {
+	if(argc != 3) {
+		fprintf(stderr,"오류");
+		exit(1);
+	}
+
+	fName = argv[1];
+	file = fopen(fName,"rb");
+
+	FRIEND_READ();
+	FRIEND_SAVE();
+	print();
+	fprint(argv[2]);
 	return 0;
 }
