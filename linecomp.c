@@ -48,31 +48,31 @@ void checkout_same_line(unsigned char *buff) {
 	int len = strlen(buff);
 
 	for(int i = 0; i < height; i++) { //for문이 두번 딱 돌면서 2차원 배열로 바꿔준다~ 이말이야
-		for(int k = 0; k < len; k++) {
-			temp2[k] = buff[x];
-			if(buff[x] == '\n') {
-				temp2[++k] = '\0';
-				break;
+		for(int k = 0; k < len; k++) { //반복하면서 \n나올때 까지 temp2에 값을 저장
+			temp2[k] = buff[x];	
+			if(buff[x] == '\n') { //temp2 x번째에 \n이 들어갔다.
+				temp2[++k] = '\0'; //temp2마지막 위치에 null포인터 저장
+				break; //안쪽 for문 탈출
 			}
-			x++;
+			x++; //개행문자가 없으면 위의 if문은 그냥 지나쳐오고 buff다음위치 값을 temp에 대입하기 위해 x++해준다
 		}
-		strcpy(temp[i], temp2);
+		strcpy(temp[i], temp2); //break한 이후 temp[i]에 temp2의 값을 복사한다.
 	}
 
-	for(int i = 0; i < 5; i++) 
+	for(int i = 0; i < 5; i++) //출력해서 temp에 제대로 들어갔는지 확인
 		printf("%s", temp[i]);
 
-	for(int i = 0; i < height; i++) {
+	for(int i = 0; i < height; i++) { //반복문이 돌면서 i번째 temp값과 그보다 1큰 k값으로 두 값을 비교한다.
 		for(int k = i+1; k < height; k++) {
-			if(strcmp(temp[i], temp[k]) == 0){
-				strcpy(temp[k], "=");
+			if(strcmp(temp[i], temp[k]) == 0){ //두 값이 같으면
+				strcpy(temp[k], "="); //k번째 temp에 =+같은 줄번호\n\0을 입력한다.
 				temp[k][1] = i+1;
 				temp[k][2] = '\n';
 				temp[k][3] = '\0';
 			}
 		}
 	}
-	x = 0;
+	x = 0; 
 	for(int i = 0; i < height; i++) { //완성된 값을 for문이 돌면서 순서대로 값을 buff에 입력한다.
 		for(int k = 0; temp[i][k] != '\0'; k++)
 			for(int j = 0; j < 3; j++)
