@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
   char *test;					
   char *tmp;
 	char *ch;
-	char des_buff[1000], friend_buff[1000];
+	char des_buff[1000], friend_buff[1000], item_save_buff[1000], user_buff[1000];
 
 	int count_user = 0;			//user 정보 받기 위한 count 변수
 	int count_item = 0;			//Item 정보 받기 위한 count 변수
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 	int count_fnum = 0;			//동맹원 수
 	int line = 0;
 	int index = 0;
-	int x = 0, z= 0;
+	int x = 0, z= 0, c = 0, v = 0;
 
   while(!feof(fp)) {
 		test = fgets(buffer, 1000, fp);
@@ -71,14 +71,14 @@ int main(int argc, char *argv[]) {
 		}
 		
     switch(index) {
-			case 1 : tmp = strstr(test, ":");				//tmp에 :값부터 저장
-							 
+			case 1 : tmp = strstr(test, ":");				//tmp에 :값부터 저장							 
 							 if(tmp != NULL) {							
 								 if(index != 1) {
 									 exit(1);
 								 }
 								 user[count_user] = &tmp[2];
-								 printf("%s", user[count_user++]);
+								 for(int k = 0; k < strlen(user[count_user]); k++)
+									 user_buff[v++] = user[count_user][k];
 							 }
 							 break;
 
@@ -88,14 +88,15 @@ int main(int argc, char *argv[]) {
 									 exit(1);
 								 }
 								 item_save[count_item] = &tmp[2];
-								 printf("%s", item_save[count_item++]);
+								 for(int k = 0; k < strlen(item_save[count_item]); k++)
+									 item_save_buff[c++] = item_save[count_item][k];
 							 }
 							 break;
 
  		  case 3 : tmp = strstr(test, ":");
 							 if(tmp != NULL) {
 								 if(index != 3) {
-									 break;
+									 exit(1);
 								 }
 								 friend[count_friend] = &tmp[2];
 								 for(int k = 0; k < strlen(friend[count_friend]); k++)
@@ -116,9 +117,16 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	
+	user_buff[v++] = '\0';
+	item_save_buff[c++] = '\0';
 	friend_buff[z++] = '\0';
 	des_buff[x++] = '\0';
-	printf("friend: \n%s", friend_buff);;
+
+	printf("user: \n%s", user_buff);
+	printf("item: \n%s", item_save_buff);
+	printf("friend: \n%s", friend_buff);
+	printf("description: \n%s", des_buff);
+
 
 /*		
 	count_fnum = count_friend / 4;
