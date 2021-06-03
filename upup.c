@@ -66,7 +66,7 @@ void insert_file(unsigned char *buff) { //파일.... 넣을게...
 }
 
 int main(int argv, char *argc[]) {
-	unsigned char script[100] = "BBB222"; //이게 테스팅용으로 들어가는 값임 (원본값을 여기다 대입하면 되용)
+	unsigned char script[100] = "BBB222\nBBBBBVV3"; //이게 테스팅용으로 들어가는 값임 (원본값을 여기다 대입하면 되용)
 	unsigned char buff[3000]; //원본값을 변환시킨 값이 들어가는 버퍼(일단 세번씩 반복하는거니 최악의 경우를 대비해서 크기 3000잡아놈
 
 	checkout_buff(buff, script);
