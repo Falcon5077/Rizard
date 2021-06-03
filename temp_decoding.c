@@ -110,11 +110,11 @@ void FRIEND_READ() { // 인코더 파일 읽어오는 함수
 	int x = 0;
 	for(int i = 0; i < num; i++) {
 		FRIEND[i].I_length = ReadLen();
-		fread(FRIEND[i].buffer,sizeof(char), FRIEND[i].I_length * 3 ,fp2);
+		fread(FRIEND[i].buffer,sizeof(char), FRIEND[i].I_length * 3 ,fp1);
 		FRIEND[i].N_length = ReadLen();
-		fread(FRIEND[i].buffer_n,sizeof(char), FRIEND[i].N_length *3 ,fp2);
-		fread(FRIEND[i].buffer_g,sizeof(char),3,fp2);
-		fread(FRIEND[i].buffer_age,sizeof(char),3,fp2);
+		fread(FRIEND[i].buffer_n,sizeof(char), FRIEND[i].N_length *3 ,fp1);
+		fread(FRIEND[i].buffer_g,sizeof(char),3,fp1);
+		fread(FRIEND[i].buffer_age,sizeof(char),3,fp1);
 	}
 }
 void FRIEND_SAVE() { // buffer에 있는 정보를 걸러서 출력하고자하는 구조체에 저장
