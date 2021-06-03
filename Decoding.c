@@ -58,7 +58,7 @@ void fprint() {
 		else {
 			fprintf(fp2, "FRIEND%d GENDER: FEMALE\n", i + 1);
 		}
-		fprintf(fp2, "FRIEND%d AGE : %d\n\n", i + 1, FRIEND[i].age);
+		fprintf(fp2, "FRIEND%d AGE: %d\n\n", i + 1, FRIEND[i].age);
 	}
 }
 
