@@ -18,18 +18,21 @@ char* Items[] = {
 // 전역변수 
 FILE* fp1;
 FILE* fp2;
-char* str; // 자른 문자열 저장하는 함수
-char count = 0; // 몇번째 아이템인지 구분하는 변수
-unsigned char tmp_item_count[6] = { 0 }; // 아이템별 개수 저장하는 배열
-char tmp_Items_list[255] = { 0 }; // 텍스트파일의 아이템 상황을 저장하는 문자열
-char Items_list[255] = { 0 }; // 아이템 존재하면 이름, 없으면 0 대입
+
+int i;
+char* str; // 자른 문자열 저장하는 변수
+char count = 0; // 아이템 총 개수 저장하는 변수
+char Item_list[255] = { 0 };    // 텍스트파일을 일자로 붙인 문자열(구분은 /로 구분)
+char CP_Item_list[255] = { 0 }; // Item_list의 내용이 복사된 문자열
+unsigned char tmp_item_count[6] = { 0 }; // 아이템별 개수 저장하는 배열 (비어있으면 땡겨와서 저장)
 
 // 함수 선언
-void Check_Item(void);
-char Check_Item_sort(void);
-void Write_Item(char);
-void WriteChar(unsigned char);
+void Check_Item(void);          // 아이템을 텍스트파일에서 불러와서 하나의 문자열로 저장하는 함수
+char Check_Item_sort(void);     // 그 문자열이 약속된 순서와 일치하는지 아닌지 판별하는 함수
+void Write_Item(char);          // 아이템을 약속된 방식으로 파일에 쓰는 함수
+void WriteChar(unsigned char);  // 파일에 쓸때 약속된 규칙으로 3회 반복해서 쓰는 함수
 
+// 메인함수
 int main(int argc, char* argv[]) {
     if (argc != 3) {
         printf("Error!\n");
@@ -44,11 +47,14 @@ int main(int argc, char* argv[]) {
     //아이템 배열에서 끌고와서 저장하는 함수
     Check_Item();
 
-    strcpy(Items_list, tmp_Items_list);
+    // Item_list을 CP_Item_list에 복사
+    strcpy(CP_Item_list, Item_list);
+
     //저장한 값으로 아이템의 순서규칙 확인하는 함수
     //sort 값이 1이면 순서대로, 0이면 순서대로x
     sort = Check_Item_sort();
 
+    // 약속된 규칙으로 텍스트를 인코딩하는 함수
     Write_Item(sort);
 
     fclose(fp1);
@@ -82,8 +88,8 @@ void Check_Item(void) {
             if (tmp != NULL) {
                 tmp[strlen(tmp) - 1] = '\0';
                 //  tmp_Items에 텍스트파일 순서로 아이템 이어 붙이기
-                strcat(tmp_Items_list, tmp);
-                strcat(tmp_Items_list, "/"); // /로 아이템 구분
+                strcat(Item_list, tmp);
+                strcat(Item_list, "/"); // /로 아이템 구분
 
                 ptr = strtok(NULL, "\n"); // \n으로 문자열 잘라서 개수 찾기
 
@@ -105,7 +111,7 @@ void Check_Item(void) {
 
     if (count != 6) {
         for (int i = 0; i < 6 - count; i++) { // 없는 아이템은 tmp_Items에
-            strcat(tmp_Items_list, "0/");        // 0으로 저장
+            strcat(Item_list, "0/");        // 0으로 저장
             tmp_item_count[count + i] = 0;    // 개수 저장 배열에도 0 대입
         }
     }
@@ -115,12 +121,12 @@ void Check_Item(void) {
 }
 
 char Check_Item_sort(void) {
-    int i, num;
+    int num;
     char tmp_count[6] = { 0 }; // ptr과 Items[i]와 같을때의 i값
     int for_count = 0; // for문 돌아가는 횟수
     char sort = 0;
 
-    str = strtok(tmp_Items_list, "/"); // 슬래쉬(/) 단위로 잘라서 str에 저장
+    str = strtok(Item_list, "/"); // 슬래쉬(/) 단위로 잘라서 str에 저장
     while (str != NULL) { // 자른 값이 NULL이 아닐때 
         for (i = 0; i < 6; i++) {
             if ((num = strcmp(Items[i], str)) == 0) { // str값이 Items[i] 랑 같을 때
@@ -155,7 +161,7 @@ void Write_Item(char sort) {
         WriteChar(count); // 총 개수 파일에 쓰기
 
         if (1 <= count && count <= 4) {
-            str = strtok(Items_list, "/");
+            str = strtok(CP_Item_list, "/");
             while (str != NULL) {
                 if (k == 6) break;
                 if ((num = strcmp(Items[k++], str)) == 0) {
@@ -181,7 +187,7 @@ void Write_Item(char sort) {
         }
 
         else if (count == 5) {
-            str = strtok(Items_list, "/");
+            str = strtok(CP_Item_list, "/");
             while (str != NULL) {
                 if (k == 6) break;
                 if ((num = strcmp(Items[k++], str)) == 0) {
@@ -204,7 +210,7 @@ void Write_Item(char sort) {
         WriteChar(sort); // sort값 파일에 쓰기
         WriteChar(count);// 총 개수 파일에 쓰기
 
-        str = strtok(Items_list, "/");
+        str = strtok(CP_Item_list, "/");
         while (str != NULL) {
             for (int i = 0; i < 6; i++) {
                 if ((num = strcmp(Items[i], str)) == 0) {
