@@ -53,10 +53,10 @@ int main(int argc, char *argv[]) {
 	int count_user = 0;			//user 정보 받기 위한 count 변수
 	int count_item = 0;			//Item 정보 받기 위한 count 변수
 	int count_friend = 0;		//동맹 정보 받기 위한 count 변수
-	int count_fnum = 0;			//동맹원 수
 	int line = 0;
 	int index = 0;
 	int x = 0, z= 0, c = 0, v = 0;
+	int plz = 0;
 
   while(!feof(fp)) {
 		test = fgets(buffer, 1000, fp);
@@ -77,8 +77,18 @@ int main(int argc, char *argv[]) {
 									 exit(1);
 								 }
 								 user[count_user] = &tmp[2];
+								
+								 if(strcmp(user[count_user],"FEMALE\n") == 0) {
+									 user[count_user] = "F\n";
+								 }
+
+								 else if(strcmp(user[count_user], "MALE\n") == 0) {
+									 user[count_user] = "M\n";
+								 }
+
 								 for(int k = 0; k < strlen(user[count_user]); k++)
 									 user_buff[v++] = user[count_user][k];
+
 							 }
 							 break;
 
@@ -99,8 +109,19 @@ int main(int argc, char *argv[]) {
 									 exit(1);
 								 }
 								 friend[count_friend] = &tmp[2];
-								 for(int k = 0; k < strlen(friend[count_friend]); k++)
+
+								 if(strcmp(friend[count_friend],"FEMALE\n") == 0) {
+									 friend[count_friend] = "F\n";
+								 }
+
+								 else if(strcmp(friend[count_friend], "MALE\n") == 0) {
+									 friend[count_friend] = "M\n";
+								 }
+
+								 for(int k = 0; k < strlen(friend[count_friend]); k++) 
 									 friend_buff[z++] = friend[count_friend][k];
+
+								 plz++;
 							 }
 							 break;
 
@@ -122,21 +143,13 @@ int main(int argc, char *argv[]) {
 	friend_buff[z++] = '\0';
 	des_buff[x++] = '\0';
 
+	plz = plz / 4;
+
 	printf("user: \n%s", user_buff);
 	printf("item: \n%s", item_save_buff);
 	printf("friend: \n%s", friend_buff);
-	printf("description: \n%s", des_buff);
-
-
-		
-	count_fnum = count_friend / 4;
-	printf("count: %d\n", count_fnum);
-
-
-/*	if(fgets(buffer, 1000, fp) == NULL) {
-		break;
-		}
-*/
+	printf("description: \n%s", des_buff);	
+	printf("count: %d\n", plz);
 
 	fclose(fp);
 
