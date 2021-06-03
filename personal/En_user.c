@@ -12,14 +12,19 @@ unsigned char HP;
 unsigned char MP;
 unsigned short coin;
 
+int sort = 0;
+int sortcheck = 0;
+int bin = 0;
+
 char* Items[] = {
 	"BOMB",
-	"POSTION",
+	"POTION",
 	"CURE",
 	"BOOK",
 	"SHIELD",
 	"CANNON"
 };
+char* items1[7] = {0};
 FILE *fp2;
 
 void WriteChar(unsigned char len)
@@ -47,6 +52,62 @@ void WriteStr(unsigned char* str)
 	}
 }
 
+int CheckSeq(char* iname,char* value)
+{	
+	for(int i = 0; i < 6; i++)
+	{
+		if(strcmp(Items[i],iname) == 0){
+			items1[i] = value;
+			printf("%d번째 아이템 : %s개, \n",i,items1[i]);
+			//WriteStr(items1[i]);
+			switch(i){
+				case 0:
+					if(sortcheck > 0)
+						sort = 1;
+					sortcheck += 1;
+					bin += 32;
+					break;
+				case 1:
+					if(sortcheck > 1)
+						sort = 1;
+					sortcheck += 2;
+					bin += 16;
+					break;
+				case 2:
+					if(sortcheck > 3)
+						sort = 1;
+					sortcheck += 3;
+					bin += 8;
+					break;
+				case 3:
+					if(sortcheck > 6)
+						sort = 1;
+					sortcheck += 4;
+					bin += 4;
+					break;
+				case 4:
+					if(sortcheck > 10)
+						sort = 1;
+					sortcheck += 5;
+					bin += 2;
+					break;
+				case 5:
+					if(sortcheck > 15)
+						sort = 1;
+					sortcheck += 6;
+					bin += 1;
+					break;
+			}
+
+			return bin;
+		}	
+	}
+}
+
+void WriteItem()
+{
+}
+
 int main(int argc,char *argv[])
 {
 	/*if(argc != 2)
@@ -65,12 +126,16 @@ int main(int argc,char *argv[])
 	int count = 0;
 	int count2 = 0;
 	
+	
 	while(!feof(fp)){
 		line = fgets(buffer,1000,fp);
+
+		if(line == NULL){
+			break;
+		}
+	
 		if(strstr(line,"*")){		// a 1 user 2 item 3 ally 4 dis
 			printf("%d 번째 필드! \n",++a);
-			if(a == 4)
-				break;
 			continue;
 		}	
 		if(a ==1){			
@@ -104,7 +169,7 @@ int main(int argc,char *argv[])
 						WriteChar(age);
 						break;
 					case 5:
-						HP = atoi(&value[1]);
+					HP = atoi(&value[1]);
 						WriteChar(HP);
 						break;
 					case 6:
@@ -119,27 +184,38 @@ int main(int argc,char *argv[])
 			}
 			
 		}
-		else if(a == 2)
+		else if(a == 2 )
 		{
 			char* field = strtok(line,":");
 			char* value2 = strtok(NULL," ");
 			if(value2 != NULL && field != NULL){
 				++count2;
 				value2[strlen(value2)-1] = '\0';
-				switch(count2)
-				{
-					case 1:						
-					case 2:
-					case 3:
-					case 4:
-						//printf("필드이름 : %s / 값 : %s\n",field,&value2[0]);
-						break;
-				}
-			}
+				CheckSeq(field,&value2[0]);
+			}				
 		}
-		
 	}
+
 	fclose(fp);
+//	printf("2진수 : %d \nSort : %d\n",bin,sort);
+
+	for(int i = 0 ; i < 6; i++)
+	{
+		if(items1[i] != NULL)
+		{	
+		//	WriteStr(items1[i]);
+			printf("%s : %s \n",Items[i],items1[i]);
+			//printf("%s\n",items2[i]);
+		}
+	}
+
+	if( sort == 0)
+		printf("정렬됨 \n");
+	else
+		printf("정렬안됨\n");
+//	fclose(fp);
 	
 	return 0;
 }
+
+
