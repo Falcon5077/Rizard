@@ -32,8 +32,8 @@ char ReadLen(void);
 unsigned short ReadShort();
 void ReadStr(char len, char* target);
 // 텍스트 출력 함수
-void USER_STATUS_fun(void);
-void ITEM_fun(void);
+void Write_USER_STATUS(void);
+void Write_ITEMS(void);
 
 // main 함수
 int main(int argc, char* argv[]) {
@@ -48,9 +48,8 @@ int main(int argc, char* argv[]) {
     fp2 = fopen(final_result, "w+t");
 
     // 유저 정보 출력
-    USER_STATUS_fun();
-    // 아이템 정보 출력
-    ITEM_fun();
+	Write_USER_STATUS();
+	Write_ITEMS();
 
     fclose(fp1);
     fclose(fp2);
