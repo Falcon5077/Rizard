@@ -51,5 +51,39 @@ int main(int argc,char  *argv[])
 	fwrite(&coin,1,sizeof(unsigned short),file);
     fwrite(&coin,1,sizeof(unsigned short),file);
     fwrite(&coin,1,sizeof(unsigned short),file);
+
+	len = 1;
+	fwrite(&len,1,sizeof(char),file);
+	fwrite(&len,1,sizeof(char),file);
+	fwrite(&len,1,sizeof(char),file);
+
+	len = 5;
+	fwrite(&len,1,sizeof(char),file);
+	fwrite(&len,1,sizeof(char),file);
+	fwrite(&len,1,sizeof(char),file);
+
+	arr = "KKKMMMUUU111555";
+	fwrite(arr,strlen(arr),sizeof(unsigned char),file);
+
+	len = 8;
+	fwrite(&len,1,sizeof(char),file);
+	fwrite(&len,1,sizeof(char),file);
+	fwrite(&len,1,sizeof(char),file);
+
+	arr = "PPPAAARRRKKK   EEEOOONNN";
+	fwrite(arr,strlen(arr),sizeof(unsigned char),file);
+
+	len = 'M';
+	fwrite(&len,1,sizeof(char),file);
+	fwrite(&len,1,sizeof(char),file);
+	fwrite(&len,1,sizeof(char),file);
+
+	len = 15;
+	fwrite(&len,1,sizeof(char),file);
+	fwrite(&len,1,sizeof(char),file);
+	fwrite(&len,1,sizeof(char),file);
+
+
+
 	return 0;
 }
