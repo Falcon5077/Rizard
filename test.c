@@ -13,7 +13,7 @@ typedef struct{
 }info;
 
 unsigned char AGE_f[255]; // AGE를 문자열 202020이 아닌 숫자 ^T^T^T로 출력
-unsigned char count_fnum = 5;		// 동맹수 1 부터 시작해야함. FRIEND 1 ID . . .   
+int count_fnum = 5;		// 동맹수 1 부터 시작해야함. FRIEND 1 ID . . .   
 
 FILE *fp;
 
@@ -22,12 +22,26 @@ void Write_data(unsigned char count_fnum, info* pFRIEND);
 void WriteStr(unsigned char len, char* str);
 void WriteChar(unsigned char len);
 
-// 받아오는건 대충 일캐?
+// main 함수
+int main(int argv, char *argc[]) {
+
+	fp = fopen("list.bin", "wb");
+
+	info FRIEND[100];		// 구조체 배열 FRIEND로 선언 최대 100명까지
+
+  Read_data(count_fnum, FRIEND);
+	Write_data(count_fnum, FRIEND);
+	
+	fclose(fp);
+	return 0;
+}
+
+// Read 함수
 void Read_data(unsigned char count_fnum, info* pFRIEND){
 
-unsigned char friend_buff[1000] = "KMU_CS1\nHONG A\nM\n20\nKMU_CS2\nSIBAL \nF\n30\n";
-unsigned char *temp;
-int count = 0;
+	unsigned char friend_buff[1000] = "KMU_CS1\nHONG A\nM\n20\nKMU_CS2\nSIBAL \nF\n30\n";
+	unsigned char *temp;
+	int count = 0;
 
 	for (int i = 0; i < count_fnum; i++){
 	
@@ -61,6 +75,7 @@ int count = 0;
 	}	
 }
 
+// Write 함수
 void Write_data(unsigned char count_fnum, info *pFRIEND){
 
 	WriteChar(count_fnum);		// 동맹수
@@ -80,6 +95,7 @@ void Write_data(unsigned char count_fnum, info *pFRIEND){
 	}
 }
 
+// 문장입력
 void WriteStr(unsigned char len, char* str) {
 
 	for(int i = 0; i < len; i++) {
@@ -92,6 +108,7 @@ void WriteStr(unsigned char len, char* str) {
 	}
 }
 
+// 단어입력
 void WriteChar(unsigned char len) {
 
 	for(int i = 0; i < 3; i++) {
@@ -101,15 +118,7 @@ void WriteChar(unsigned char len) {
 	}
 }
 
-int main(int argv, char *argc[]) {
 
-	fp = fopen("list.bin", "wb");
-
-	info FRIEND[100];		// 구조체 배열 FRIEND로 선언 최대 100명까지
-
-  Read_data(count_fnum, FRIEND);
-	Write_data(count_fnum, FRIEND);
-	
-	fclose(fp);
-	return 0;
-}
+/* count_fnum(동맹수) 값을 받아서 반복함.
+	 현재 segmentation 뜨는데 이건 배열의 길이가 동맹수보다 작아서 뜨는 오류임
+	 배열의 길이를 받아서 동맹 수 만큼 할당받으면 걱정 없음 */
