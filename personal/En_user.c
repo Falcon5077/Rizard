@@ -49,12 +49,13 @@ void WriteStr(unsigned char* str)
 
 int main(int argc,char *argv[])
 {
-	if(argc != 2)
+	/*if(argc != 2)
 	{
 		printf("Error....\n");
 		exit(1);
 	}
-	FILE* fp = fopen(argv[1],"rb");
+	FILE* fp = fopen(argv[1],"rb");*/
+	FILE* fp = fopen("test_sample1.txt","rb");
 	fp2 = fopen("db.bin","wb");
 	
 	char buffer[1000];
