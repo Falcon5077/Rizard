@@ -90,6 +90,21 @@ void Checkstr_N(char *buffer,int F_num) {
 	}
 } //name buffer에 저장된 데이터를 추출한다.
 
+void print() {
+	printf("*FRIENDS LIST*\n");
+	for(int i = 0; i< num; i++) {
+		printf("ID : %s\n",FRIEND[i].ID);
+		printf("NAME : %s\n",FRIEND[i].name);
+		if(FRIEND[i].gender=='M') {
+			printf("GENDER : MALE\n");
+		}
+		else {
+			printf("GENDER : FEMALE\n");
+		}
+		printf("AGE : %d\n\n",FRIEND[i].age);
+	}
+}
+
 void FRIEND_READ() { // 인코더 파일 읽어오는 함수
 	num = ReadLen(); // 동맹수를 읽어 온다.
 	int x = 0;
@@ -164,6 +179,7 @@ int main(int argc, char* argv[]) {
 
 	FRIEND_READ();
 	FRIEND_SAVE();
+	print();
 	fprint();
 
     fclose(fp1);
