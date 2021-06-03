@@ -23,6 +23,7 @@ char count = 0; // 몇번째 아이템인지 구분하는 변수
 unsigned char tmp_item_count[6] = { 0 }; // 아이템별 개수 저장하는 배열
 char tmp_Items_list[255] = { 0 }; // 텍스트파일의 아이템 상황을 저장하는 문자열
 char Items_list[255] = { 0 }; // 아이템 존재하면 이름, 없으면 0 대입
+unsigned char item_count[6] = { 0 };
 // 함수 선언
 void Check_Item(void);
 char Check_Item_sort();
@@ -46,10 +47,6 @@ int main() {//int argc, char* argv[]) {
     // 저장한 값으로 아이템의 순서규칙 확인하는 함수
     // sort 값이 1이면 순서대로, 0이면 순서대로x
     sort = Check_Item_sort();
-
-    for (int i = 0; i < count; i++) {
-        printf("%d ",tmp_item_count[i]);
-    }
     
     Write_Item(sort);
 
@@ -112,8 +109,8 @@ void Check_Item(void) {
         }
     }
 
-    if (tmp_Items_list[strlen(tmp_Items_list) - 1] == '/')
-        tmp_Items_list[strlen(tmp_Items_list) - 1] = '\0';
+    /*if (tmp_Items_list[strlen(tmp_Items_list) - 1] == '/')
+        tmp_Items_list[strlen(tmp_Items_list) - 1] = '\0';*/
 
     //return tmp_item_count; // 개수 저장 배열 리턴
 
@@ -155,34 +152,55 @@ char Check_Item_sort(void) {
 }
 
 void Write_Item(char sort) {
-    int num, tmp_count = 0, result;
+    int num, tmp_count = 0, tmp_tmp_count = 0, result;
     unsigned binary_result = 0;
     char binary[6] = { 0 };
     if (sort == 1) {
         WriteChar(count); // 총 개수 파일에 쓰기
 
-        str = strtok(Items_list, "/");
-        while (str != NULL) {
-            if ((num = strcmp(Items[tmp_count], str)) == 0)
-                binary[tmp_count++] = 1;
-
-            else if (num != 0)
-                binary[tmp_count++] = 0;
-
-            str = strtok(NULL, "/");
-        }
-
-        for (int i = 5; i > 0; i--) {
-            result = pow(2, i);
-            binary_result += (unsigned char)result * binary[5 - i];
-        }
         if (1 <= count && count <= 4) {
+            str = strtok(Items_list, "/");
+            while (str != NULL) {
+                if ((num = strcmp(Items[tmp_count], str)) == 0)
+                    binary[tmp_count++] = 1;
+
+                else if (num != 0)
+                    binary[tmp_count++] = 0;
+
+                str = strtok(NULL, "/");
+            }
+
+            for (int i = 5; i > 0; i--) {
+                result = pow(2, i);
+                binary_result += (unsigned char)result * binary[5 - i];
+            }
             WriteChar(binary_result);
             for (int i = 0; i < count; i++)
                 WriteChar(tmp_item_count[i]);
         }
-        else if (5 <= count && count <= 6) {
 
+        else if (count == 5) {
+            str = strtok(Items_list, "/");
+            while (str != NULL) {
+                if ((num = strcmp(Items[tmp_count], str)) == 0) {
+                    item_count[tmp_count++] = tmp_item_count[tmp_tmp_count++];
+                    printf("%d %d\n", item_count[2], tmp_item_count[1]);
+                    str = strtok(NULL, "/");
+                    printf("num == 0 : %d\n", item_count[tmp_count]);
+                }
+                else if (num != 0) {
+                    item_count[tmp_count++] = 0;
+                    printf("num != 0 : %d\n", tmp_item_count[tmp_count]);
+                }
+            }
+
+            for (int i = 0; i < 6; i++)
+                WriteChar(item_count[i]);
+        } 
+
+        else if (count == 6) {
+            for(int i = 0; i < 6; i++)
+                WriteChar(tmp_item_count[i]);
         }
     }
 
@@ -195,7 +213,7 @@ void Write_Item(char sort) {
             for (int i = 0; i < 6; i++) {
                 if ((num = strcmp(Items[i], str)) == 0) {
                     WriteChar(i);
-                    WriteChar(tmp_item_count[tmp_count++]);
+                    WriteChar(tmp_item_count[count++]);
                     break;
                 }
                 else if (num != 0)
@@ -212,4 +230,7 @@ void WriteChar(unsigned char len)
     for (int i = 0; i < 3; i++)
         fwrite(&len, 1, sizeof(unsigned char), fp2);
 }
+
+
+
 
