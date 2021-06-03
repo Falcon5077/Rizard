@@ -225,9 +225,9 @@ int main(int argc, char *argv[]) {
 
 	fclose(fp);
 
-	checkout_buff(last_buff, user_buff);
-	checkout_same_line(last_buff);
-	insert_line(last_buff);
+	checkout_buff(last_buf, des_buff);
+	checkout_same_line(last_buf);
+	insert_file(last_buf);
 
 	return 0;
 }
