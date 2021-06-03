@@ -11,37 +11,43 @@ typedef struct{
  	char AGE;		// age	
 }info;
 
-char NUM;		// 동맹수 1 부터 시작해야함. FRIEND 1 ID . . .  
+char NUM = 5;		// 동맹수 1 부터 시작해야함. FRIEND 1 ID . . .  
 
 FILE *fp;
 
-void Read_data(info* pFRIEND);
-void Write_data(info* pFRIEND);
+void Read_data(char num, info* pFRIEND);
+void Write_data(char num, info* pFRIEND);
 void WriteStr(unsigned char len, char* str);
 void WriteChar(unsigned char len);
 
 
 // 받아오는건 대충 일캐?
-void Read_data(info* pFRIEND){
+void Read_data(char num, info* pFRIEND){
 	
-	for (int i = 0; i < NUM; i++){
+	for (int i = 0; i < num; i++){
+				
+		strcpy(pFRIEND->ID, "KMU_CS");
+		strcpy(pFRIEND->NAME, "HONG AH");
 
-		fread(&pFRIEND, sizeof(pFRIEND), 1, fp);	
-		pFRIEND++;
-
-	}	
-
-}
-
-void Write_data(info *pFRIEND){
-
-	WriteChar(NUM);		// 동맹수
-
-	for (int i = 0; i < NUM; i++)	{		// 동맹 수 만큼 반복
-		
 		pFRIEND->ID_len = strlen(pFRIEND->ID);		// 아이디 길이 구하기
 		pFRIEND->NAME_len = strlen(pFRIEND->NAME);		// 이름 길이 구하기
-  	
+ 		
+		// pFRIEND->NAME = "asd";
+		pFRIEND->GENDER = 'M';
+		// pFRIEND->AGE = "20";
+		
+		pFRIEND->AGE = 20;	
+		pFRIEND++;
+	}	
+}
+
+void Write_data(char num, info *pFRIEND){
+
+	WriteChar(num);		// 동맹수
+
+	for (int i = 0; i < num; i++)	{		// 동맹 수 만큼 반복
+		
+
 			
 		WriteChar(pFRIEND->ID_len);		// 아이디 길이
 		WriteStr(pFRIEND->ID_len, pFRIEND->ID);		// 아이디
@@ -83,8 +89,8 @@ int main(int argv, char *argc[]) {
 
 	info FRIEND[100];		// 구조체 배열 FRIEND로 선언 최대 100명까지
 
-  Read_data(FRIEND);
-	Write_data(FRIEND);
+  Read_data(NUM, FRIEND);
+	Write_data(NUM, FRIEND);
 	
 	fclose(fp);
 	return 0;
