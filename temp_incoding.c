@@ -473,7 +473,6 @@ int main(int argc, char* argv[]) {
 
 		case 2:
 			do {
-				//printf("%s\n", test);
 				if (index == 2) {
 					tmp = strtok(test, " ");
 					if (tmp != NULL) {
@@ -509,10 +508,6 @@ int main(int argc, char* argv[]) {
 					tmp_item_count[ITEM_COUNT + i] = 0;    // 개수 저장 배열에도 0 대입
 				}
 			}
-			printf("%s\n", Item_list);
-			for(int i = 0; i < ITEM_COUNT; i++)
-				printf("%d ", tmp_item_count[i]);
-			printf("\n");
 			break;
 
 		case 3: tmp = strstr(test, ":");
@@ -555,11 +550,9 @@ int main(int argc, char* argv[]) {
 
 	// Item_list을 CP_Item_list에 복사
 	strcpy(CP_Item_list, Item_list);
-	printf("%s\n", CP_Item_list);
 	//저장한 값으로 아이템의 순서규칙 확인하는 함수
 	//sort 값이 1이면 순서대로, 0이면 순서대로x
 	sort = Check_Item_sort();
-	printf("%d\n", sort);
 	fclose(fp);
 
 	fp2 = fopen(f2NAME, "wb");
