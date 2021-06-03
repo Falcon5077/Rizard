@@ -10,41 +10,133 @@ int main(){
 		exit(1);
 	}
 
-	char* arr = "AAABBBCCCDDDEEEFFFGGGHHH";
+	unsigned char* arr = "AAABBBCCCDDDEEEFFFGGGHHH";
+
+	char IDlen = 9;
+	for(int i=0; i<3; i++)
+		fwrite(&IDlen, sizeof(char), 1, fp);
+	
+	arr = "KKKMMMUUU___CCCSSS111222333";
+	fwrite(arr, 27, 1, fp);
+	
+	char Namelen = 4;
+	for(int i=0; i<3; i++)
+		fwrite(&Namelen, sizeof(char), 1, fp);
+
+	arr = "HHHOOONNNGGG";
+	fwrite(arr, 12, 1, fp);
+
+	arr = "FFF";
+	fwrite(arr, 3, 1, fp);
+
+	char age = 33;
+	for(int i=0; i<3; i++)
+		fwrite(&age, sizeof(char), 1, fp);
+
+	char HP = 200;
+	for(int i=0; i<3; i++)
+		fwrite(&HP, sizeof(char), 1, fp);
+
+	char MP = 5;
+	for(int i=0; i<3; i++)
+		fwrite(&MP, sizeof(char), 1, fp);
+
+	unsigned short Coin = 43210;
+	for(int i=0; i<3; i++)
+		fwrite(&Coin, sizeof(unsigned short), 1, fp);
+
+	char tmp = 3;
+	for(int i=0; i<3; i++)
+		fwrite(&tmp, sizeof(char), 1, fp);
+
+	tmp = 56;
+	for(int i=0; i<3; i++)
+		fwrite(&tmp, sizeof(char), 1 ,fp);
+
+	tmp = 1;
+	for(int i=0; i<3; i++)
+		fwrite(&tmp, sizeof(char), 1, fp);
+
+	tmp = 3;
+	for(int i=0; i<3; i++)
+		fwrite(&tmp, sizeof(char), 1, fp);
+
+	tmp = 10;
+	for(int i=0; i<3; i++)
+		fwrite(&tmp, sizeof(char), 1, fp);
+
+	//동맹시작
+	tmp = 2;
+	for(int i=0; i<3; i++)
+		fwrite(&tmp, sizeof(char), 1, fp);
+
+	IDlen = 7;
+	Namelen = 5;
+
+	for(int i=0; i<3; i++)
+		fwrite(&IDlen, sizeof(char), 1, fp);
+
+	arr="KKKMMMUUU___CCCSSS111";
+	fwrite(arr, 21, 1, fp);
+
+	for(int i=0; i<3; i++)
+		fwrite(&Namelen, sizeof(char), 1, fp);
+	
+	arr = "KKKIIIMMM   SSS";
+	fwrite(arr, 15, 1, fp);
+	
+	arr = "MMM";
+	fwrite(arr, 3, 1, fp);
+	
+	char age_f = 12;
+
+	for(int i=0; i<3; i++)
+		fwrite(&age_f, sizeof(char), 1, fp);
+
+	for(int i=0; i<3; i++)
+		fwrite(&IDlen, sizeof(char), 1, fp);
+	
+	arr="KKKMMMUUU___CCCSSS222";
+	fwrite(arr, 21, 1, fp);
+
+	for(int i=0; i<3; i++)
+		fwrite(&Namelen, sizeof(char), 1, fp);
+
+	arr = "LLLEEEEEE   DDD";
+	fwrite(arr, 15, 1, fp);
+
+	arr = "FFF";
+	fwrite(arr, 3, 1, fp);
+
+	age_f = 30;
+
+	for(int i=0; i<3; i++)
+		fwrite(&age_f, sizeof(char), 1, fp);
+
+
+	//des
 	char enter = '\n';
+	arr = "AAABBBaaadddeeeGGGAAAggg";
+	fwrite(arr, 24, 1, fp);
 
-	fwrite(arr, sizeof(char)*33, 1, fp);
 	for(int i=0; i<3; i++)
-		fwrite(&enter, sizeof(char), 1, fp);
+		fwrite(&enter, 1, 1, fp);
 
-	arr = "IIIJJJKKKLLLMMMNNNOOOPPPQQQ";
-	fwrite(arr, sizeof(char)*24, 1, fp);
-	for(int i=0; i<3; i++)
-		fwrite(&enter, sizeof(char), 1, fp);
+	arr = "HHHEEELLLLLLOOO";
+	fwrite(arr, 15, 1, fp);
 
-	arr = "RRRSSSTTTUUUVVVWWWXXXYYYZZZ";
-	fwrite(arr, sizeof(char)*12, 1, fp);
 	for(int i=0; i<3; i++)
-		fwrite(&enter, sizeof(char), 1, fp);
-	
-	char one='5'-10;
-	for(int i=0; i<3; i++)
-		fwrite(&one, sizeof(char), 1, fp);
-	char two='7'-10;
-	for(int i=0; i<3; i++)
-		fwrite(&two, sizeof(char), 1, fp);
-	int ex=5;
-	char es_c=ex;
-	for(int i=0; i<3; i++)
-		fwrite(&es_c, sizeof(char), 1, fp);
+		fwrite(&enter, 1, 1, fp);
 
-	char three='8'-20;
-	for(int i=0; i<3; i++)
-		fwrite(&three, sizeof(char), 1, fp);
-	
-	char ee='D';
-	for(int i=0; i<3; i++)
-		fwrite(&ee, sizeof(char), 1, fp);
+
+
+
+
+
+
+
+
+
 
 	fclose(fp);
 
