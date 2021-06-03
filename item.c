@@ -20,7 +20,7 @@ FILE* fp1;
 FILE* fp2;
 
 char* str; // 자른 문자열 저장하는 변수
-char count = 0; // 아이템 총 개수 저장하는 변수
+char ITEM_COUNT = 0; // 아이템 총 개수 저장하는 변수
 char Item_list[255] = { 0 };    // 텍스트파일을 일자로 붙인 문자열(구분은 /로 구분)
 char CP_Item_list[255] = { 0 }; // Item_list의 내용이 복사된 문자열
 unsigned char tmp_item_count[6] = { 0 }; // 아이템별 개수 저장하는 배열 (비어있으면 땡겨와서 저장)
@@ -93,14 +93,14 @@ void Check_Item(void) {
                 ptr = strtok(NULL, "\n"); // \n으로 문자열 잘라서 개수 찾기
 
                 if (atoi(ptr) != 0) // 개수를 정수화
-                    tmp_item_count[count] = (unsigned char)atoi(ptr); // 정수형 배열에 대입
+                    tmp_item_count[ITEM_COUNT] = (unsigned char)atoi(ptr); // 정수형 배열에 대입
 
                 else if (atoi(ptr) == 0)
-                    tmp_item_count[count] = 0;   //   아이템별 개수 없으면 0
+                    tmp_item_count[ITEM_COUNT] = 0;   //   아이템별 개수 없으면 0
             }
 
-            if (count != 6) {
-                count++; // 아이템 총 개수 계산
+            if (ITEM_COUNT != 6) {
+                ITEM_COUNT++; // 아이템 총 개수 계산
                 continue;
             }
             else
@@ -108,10 +108,10 @@ void Check_Item(void) {
         }
     }
 
-    if (count != 6) {
-        for (int i = 0; i < 6 - count; i++) { // 없는 아이템은 tmp_Items에
+    if (ITEM_COUNT != 6) {
+        for (int i = 0; i < 6 - ITEM_COUNT; i++) { // 없는 아이템은 tmp_Items에
             strcat(Item_list, "0/");        // 0으로 저장
-            tmp_item_count[count + i] = 0;    // 개수 저장 배열에도 0 대입
+            tmp_item_count[ITEM_COUNT + i] = 0;    // 개수 저장 배열에도 0 대입
         }
     }
 
@@ -157,9 +157,9 @@ void Write_Item(char sort) {
     unsigned binary_result = 0;
     char binary[6] = { 0 };
     if (sort == 1) {
-        WriteChar(count); // 총 개수 파일에 쓰기
+        WriteChar(ITEM_COUNT); // 총 개수 파일에 쓰기
 
-        if (1 <= count && count <= 4) {
+        if (1 <= ITEM_COUNT && ITEM_COUNT <= 4) {
             str = strtok(CP_Item_list, "/");
             while (str != NULL) {
                 if (k == 6) break;
@@ -181,11 +181,11 @@ void Write_Item(char sort) {
                 binary_result += (unsigned char)result * binary[5 - i];
             }
             WriteChar(binary_result);
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < ITEM_COUNT; i++)
                 WriteChar(tmp_item_count[i]);
         }
 
-        else if (count == 5) {
+        else if (ITEM_COUNT == 5) {
             str = strtok(CP_Item_list, "/");
             while (str != NULL) {
                 if (k == 6) break;
@@ -199,7 +199,7 @@ void Write_Item(char sort) {
             }
         }
 
-        else if (count == 6) {
+        else if (ITEM_COUNT == 6) {
             for (int i = 0; i < 6; i++)
                 WriteChar(tmp_item_count[i]);
         }
@@ -207,7 +207,7 @@ void Write_Item(char sort) {
 
     else if (sort == 0) {
         WriteChar(sort); // sort값 파일에 쓰기
-        WriteChar(count);// 총 개수 파일에 쓰기
+        WriteChar(ITEM_COUNT);// 총 개수 파일에 쓰기
 
         str = strtok(CP_Item_list, "/");
         while (str != NULL) {
