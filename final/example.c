@@ -10,12 +10,13 @@ int main(){
 		exit(1);
 	}
 
-	unsigned char* arr = "AAABBBCCCDDDEEEFFFGGGHHH";
+	unsigned char* arr = "THIS IS EXAMPLE";
 	char tmp = 0;
 	char IDlen = 9;
 	for(int i=0; i<3; i++)
 		fwrite(&IDlen, sizeof(char), 1, fp);
 	
+	//MAKE USER STATUS
 	arr = "KKKMMMUUU___CCCSSS111222333";
 	fwrite(arr, 27, 1, fp);
 	
@@ -45,7 +46,8 @@ int main(){
 	for(int i=0; i<3; i++)
 		fwrite(&Coin, sizeof(unsigned short), 1, fp);
 
-	/*tmp = 3;
+	//MAKE ITEM LIST
+	tmp = 3;
 	for(int i=0; i<3; i++)
 		fwrite(&tmp, sizeof(char), 1, fp);
 
@@ -64,9 +66,9 @@ int main(){
 	tmp = 10;
 	for(int i=0; i<3; i++)
 		fwrite(&tmp, sizeof(char), 1, fp);
-*/
-	//동맹시작
-	tmp = 2;
+
+	//FRIEND LIST
+	tmp = 2; //FRIEND MEMBER
 	for(int i=0; i<3; i++)
 		fwrite(&tmp, sizeof(char), 1, fp);
 
@@ -114,19 +116,58 @@ int main(){
 		fwrite(&age_f, sizeof(char), 1, fp);
 
 
-	//des
+	//MAKE DESCRIPTION
 	char enter = '\n';
+	char buf;
 	arr = "AAABBBaaadddeeeGGGAAAggg";
 	fwrite(arr, 24, 1, fp);
+
+	buf = '1'-20;
+	for(int i=0; i<3; i++)
+		fwrite(&buf, 1, 1, fp);
 
 	for(int i=0; i<3; i++)
 		fwrite(&enter, 1, 1, fp);
 
-	arr = "HHHEEELLLLLLOOO";
+	arr="AAA";
+	fwrite(arr, 3, 1, fp);
+
+	buf = 4;
+	for(int i=0; i<3; i++)
+		fwrite(&buf, 1, 1, fp);
+
+	arr="bbbCCCbbbCCCbbbCCC";
+	fwrite(arr, 18, 1, fp);
+
+	for(int i=0; i<3; i++)
+		fwrite(&enter, 1, 1, fp);
+
+	arr = "HHHEEElllOOO";
 	fwrite(arr, 15, 1, fp);
 
 	for(int i=0; i<3; i++)
 		fwrite(&enter, 1, 1, fp);
+
+	arr = "aaa";
+	fwrite(arr, 3, 1, fp);
+
+	buf = 5;
+	for(int i=0; i<3; i++)
+		fwrite(&buf, 1, 1, fp);
+
+	arr = "CDEkkkhhhlll";
+	fwrite(arr, 12, 1, fp);
+
+	for(int i=0; i<3; i++)
+		fwrite(&enter, 1, 1, fp);
+
+	buf = '=';
+	for(int i=0; i<3; i++)
+		fwrite(&buf, 1, 1, fp);
+
+	buf = 2;
+	for(int i=0; i<3; i++)
+		fwrite(&buf, 1, 1, fp);
 
 	fclose(fp);
 
