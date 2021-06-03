@@ -59,11 +59,16 @@ void checkout_same_line(unsigned char *buff) {
 		x++;
 	}
 
+	for(int i = 0; i < height; i++)
+		printf("%s", temp[i]);
+
+	if(strcmp(temp[0], temp[2]) == 0) printf("일치해요\n");
+
 	for(int i = 0; i < height; i++) { //반복문이 돌면서 i번째 temp값과 그보다 1큰 k값으로 두 값을 비교한다.
 		for(int k = i+1; k < height; k++) {
 			if(strcmp(temp[i], temp[k]) == 0){ //두 값이 같으면
 				strcpy(temp[k], "="); //k번째 temp에 =+같은 줄번호\n\0을 입력한다.
-				temp[k][1] = i+1;
+				temp[k][1] = k;
 				temp[k][2] = '\n';
 				temp[k][3] = '\0';
 			}
@@ -84,13 +89,13 @@ void insert_file(unsigned char *buff) { //파일.... 넣을게...
 		fprintf(stderr, "Can't Open the File!\n");
 		exit(1);
 	}
-	fwrite(buff, strlen(buff), 1, fp); //3번씩 저장한 최종버퍼를 encode.bin파일에 넣을게...
+	fwrite(buff, sizeof(unsigned char), strlen(buff), fp); //3번씩 저장한 최종버퍼를 encode.bin파일에 넣을게...
 
 	fclose(fp);
 }
 
 int main(int argv, char *argc[]) {
-	unsigned char script[1000] = "ABCDE\nABCDE\nDDDE\n33333AAAAA\nJEON"; //이게 테스팅용으로 들어가는 값임 (원본값을 여기다 대입하면 되용)
+	unsigned char script[1000] = "BCDEF\nABCDFE\nABCDE\nABCDE\nJEON"; //이게 테스팅용으로 들어가는 값임 (원본값을 여기다 대입하면 되용)
 	unsigned char buff[3000]; //원본값을 변환시킨 값이 들어가는 버퍼(일단 세번씩 반복하는거니 최악의 경우를 대비해서 크기 3000잡아놈
 
 	checkout_buff(buff, script);
