@@ -295,7 +295,7 @@ void ArrToTxt() { //파일 해석하기
 	int n = 0; //반복횟수 저장변수
 	int d = 0; //반복문장 가져올 시 처음부터 검사할 변수
 
-	fprintf(fp2, "\n*DESCRIPTION*\n");
+	fprintf(fp2, "*DESCRIPTION*\n");
 	while (des[i]) { //배열 끝까지 반복		
 		if (des[i] >= 'A' && des[i] <= 'Z') { //문자가 반복되지않고 나올때
 			txt[u] = des[i++];
