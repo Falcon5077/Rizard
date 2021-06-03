@@ -34,7 +34,7 @@ unsigned char AGE_f[255]; // AGE를 문자열 202020이 아닌 숫자 ^T^T^T로 
 int count_fnum = 2;		// 동맹수 - 현재 임의 설정
 
 // FILE
-FILE *fp;
+FILE *fp2;
 
 // 함수 원형 선언
 void Read_Friend(unsigned char count_fnum, info* pFRIEND);
@@ -52,7 +52,7 @@ unsigned char friend_buff[1000] = "KMU_CS1\nHONG A\nM\n20\nKMU_CS2\nSIBAL \nF\n2
 // main 함수
 int main(int argc,char *argv[]) {
 
-	fp = fopen("list.bin","wb");
+	fp2 = fopen("list.bin","wb");
 
 	Read_User(); // User Status 값 받기 
 	Write_User(); // User Status 저장
@@ -64,7 +64,7 @@ int main(int argc,char *argv[]) {
 	Read_Friend(count_fnum, FRIEND); // Friend List 값 받기
 	Write_Friend(count_fnum, FRIEND); // Friend List 저장
 
-	fclose(fp);	// 테스트 용도로 list.bin에 저장되는거 확인
+	fclose(fp2);	// 테스트 용도로 list.bin에 저장되는거 확인
 
 // -------------------- Friend List ------------------------
 
@@ -190,7 +190,7 @@ void Write_Friend(unsigned char count_fnum, info *pFRIEND){
 void WriteChar(unsigned char len) {
 
 	for(int i = 0; i < 3; i++)
-		fwrite(&len, 1, sizeof(unsigned char), fp);
+		fwrite(&len, 1, sizeof(unsigned char), fp2);
 
 }
 
@@ -198,7 +198,7 @@ void WriteChar(unsigned char len) {
 void WriteShort(unsigned short s_len) { 
 
 	for(int i = 0; i < 3; i++)
-		fwrite(&s_len, 1, sizeof(unsigned short), fp);
+		fwrite(&s_len, 1, sizeof(unsigned short), fp2);
 
 }
 
@@ -207,7 +207,7 @@ void WriteStr(unsigned char len, unsigned char* str) {
 
 	for(int i = 0; i < len; i++) {
 		for(int j = 0; j < 3; j++)  {
-			fwrite(&str[i], 1, sizeof(unsigned char), fp);
+			fwrite(&str[i], 1, sizeof(unsigned char), fp2);
 
 		}
 	}
