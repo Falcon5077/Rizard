@@ -11,7 +11,7 @@ int main(){
 	}
 
 	unsigned char* arr = "AAABBBCCCDDDEEEFFFGGGHHH";
-
+	char tmp = 0;
 	char IDlen = 9;
 	for(int i=0; i<3; i++)
 		fwrite(&IDlen, sizeof(char), 1, fp);
@@ -45,7 +45,7 @@ int main(){
 	for(int i=0; i<3; i++)
 		fwrite(&Coin, sizeof(unsigned short), 1, fp);
 
-	char tmp = 3;
+	/*tmp = 3;
 	for(int i=0; i<3; i++)
 		fwrite(&tmp, sizeof(char), 1, fp);
 
@@ -64,7 +64,7 @@ int main(){
 	tmp = 10;
 	for(int i=0; i<3; i++)
 		fwrite(&tmp, sizeof(char), 1, fp);
-
+*/
 	//동맹시작
 	tmp = 2;
 	for(int i=0; i<3; i++)
@@ -127,16 +127,6 @@ int main(){
 
 	for(int i=0; i<3; i++)
 		fwrite(&enter, 1, 1, fp);
-
-
-
-
-
-
-
-
-
-
 
 	fclose(fp);
 
