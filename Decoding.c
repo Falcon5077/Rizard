@@ -10,7 +10,7 @@ void Checkstr_I(char* buffer, int F_num);
 void Checkstr_N(char* buffer, int F_num);
 
 void FRIEND_READ();
-void FRIEND_READ();
+void FRIEND_SAVE();
 void fprint();
 
 unsigned char CheckUnchar(unsigned char* tmp);
@@ -211,7 +211,7 @@ void FRIEND_READ() { // 인코더 파일 읽어오는 함수
 		fread(FRIEND[i].buffer_age, sizeof(char), 3, fp1);
 	}
 }
-void FRIEND_READ() { // buffer에 있는 정보를 걸러서 출력하고자하는 구조체에 저장
+void FRIEND_SAVE() { // buffer에 있는 정보를 걸러서 출력하고자하는 구조체에 저장
 	for (int i = 0; i < 3; i++) {
 		Checkstr_I(FRIEND[i].buffer, i);
 		Checkstr_N(FRIEND[i].buffer_n, i);
