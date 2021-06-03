@@ -1,23 +1,164 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX 255
-char* modified;
-char* final_result;
 
-FILE* fp1;
-FILE* fp2;
-// 규칙해소 함수들
-char CheckChar(char* len);
-unsigned short CheckShort(unsigned short* tmp);
-char ReadLen(void);
-unsigned short ReadShort();
-void ReadStr(char len, char* target);
-// 텍스트 출력 함수
+// 함수 선정의
 void Write_USER_STATUS(void);
 void Write_ITEMS(void);
 
-// 기은 
+void Checkstr_I(char* buffer, int F_num);
+void Checkstr_N(char* buffer, int F_num);
+
+void FRIEND_READ();
+void FRIEND_SAVE();
+void fprint();
+
+unsigned char CheckUnchar(unsigned char* tmp);
+unsigned char ReadUnchar();
+void makedes();
+void ArrToTxt();
+
+char CheckChar(char* tmp);
+unsigned short CheckShort(unsigned short* tmp);
+unsigned short ReadShort();
+char ReadLen();
+void ReadStr(char len, char* target);
+#define MAX 255
+
+FILE* fp1;
+FILE* fp2;
+
+char* modified;
+char* final_result;
+
+// main 함수
+int main(int argc, char* argv[]) {
+	if (argc != 3) {
+		printf("error\n");
+		return 0;
+	}
+
+	modified = argv[1];
+	final_result = argv[2];
+	fp1 = fopen(modified, "rb");
+	fp2 = fopen(final_result, "w+t");
+
+	// 유저 정보 출력
+	Write_USER_STATUS();
+
+	Write_ITEMS();
+
+	// FRIEND
+	FRIEND_READ();
+	FRIEND_SAVE();
+	fprint();
+
+	//
+	makedes();
+	ArrToTxt();
+
+	fclose(fp1);
+	fclose(fp2);
+
+	return 0;
+}
+
+// 유저
+void Write_USER_STATUS(void) {
+	unsigned char tmpLen;		//문자열 길이를 받아올 변수
+	fprintf(fp2, "*USER STATUS*\n");
+
+	tmpLen = ReadLen();		// ID의 길이를 읽음
+	ReadStr(tmpLen, "ID");		// ID길이만큼 ID 읽음
+
+	tmpLen = ReadLen();		// 이름의 길이를 읽음
+	ReadStr(tmpLen, "NAME");		// 이름의 길이만큼 이름을 읽음
+
+	tmpLen = ReadLen();		// 성별을 읽고 출력함
+	if (tmpLen == 'M')
+		fprintf(fp2, "GENDER: MALE\n");
+	else if (tmpLen == 'F')
+		fprintf(fp2, "GENDER: FEMALE\n");
+
+	tmpLen = ReadLen();		// 나이를 읽고 출력함
+	fprintf(fp2, "AGE: %d\n", tmpLen);
+
+	tmpLen = ReadLen();		// HP를 읽고 출력함
+	fprintf(fp2, "HP: %d\n", tmpLen);
+
+	tmpLen = ReadLen();		// MP를 읽고 출력함
+	fprintf(fp2, "MP: %d\n", tmpLen);
+
+	unsigned short tmp = ReadShort();	// Coin을 읽고 출력함
+	fprintf(fp2, "COIN: %d\n", tmp);
+
+	fprintf(fp2, "\n");
+}
+
+// 아이템 변수
+unsigned char ITEMS_sort, ITEMS_count, ITEMS_num;
+
+char* ITEM_NAME[] = {
+	"BOMB",
+	"POSTION",
+	"CURE",
+	"BOOK",
+	"SHIELD",
+	"CANNON"
+};
+
+// 아이템
+void Write_ITEMS(void) {
+	ITEMS_sort = ReadLen();
+	fprintf(fp2, "*ITEMS*\n");
+
+	// sort가 0이면 순서대로 x
+	if (ITEMS_sort == 0)  {
+		ITEMS_count = ReadLen();
+		unsigned char ITEMS[ITEMS_count * 2];    // 배열의 크기를 총 갯수 * 2로 고정
+		for (int i = 0; i < ITEMS_count * 2; i++)
+			ITEMS[i] = ReadLen();
+
+		for (int j = 0; j < ITEMS_count * 2; j++) {
+			fprintf(fp2, "%s : ", ITEM_NAME[ITEMS[j]]);
+			fprintf(fp2, "%d\n", ITEMS[++j]);
+		}
+	}
+
+	// sort가 0이 아니면 순서대로
+	else if (ITEMS_sort != 0) {
+		ITEMS_count = ITEMS_sort;
+		if ((ITEMS_count >= 1) && (ITEMS_count <= 4)) { // ITEMS 갯수가 1이상 4이하일때
+			char ITEMS[6];
+			int T_num = ReadLen(), n = 6;
+			while (n != 0) {
+				ITEMS[--n] = T_num % 2;
+				T_num /= 2;
+			}
+			for (int i = 0; i < 6; i++) {
+				if (ITEMS[i] != 0) {
+					ITEMS_num = ReadLen();
+					fprintf(fp2, "%s : %d\n", ITEM_NAME[i], ITEMS_num);
+				}
+				else
+					continue;
+			}
+		}
+		else if ((ITEMS_count >= 5) && (ITEMS_count <= 6)) { // ITEMS 갯수가 5이상 6이하일때
+			unsigned char ITEMS[6];   // 배열의 크기는 6으로 고정
+			for (int i = 0; i < 6; i++) {
+				ITEMS[i] = ReadLen();   // 차례대로 규칙해소
+				if (ITEMS[i] == 0) // ITEMS배열에 저장된 수가 0이면 출력 x
+					continue;
+				fprintf(fp2, "%s : %d\n", ITEM_NAME[i], ITEMS[i]);
+			}
+		}
+	}
+	fprintf(fp2, "\n");
+}
+
+
+// 동맹 변수
 typedef struct {
 	unsigned char I_length;
 	unsigned char N_length;
@@ -32,39 +173,7 @@ typedef struct {
 }info; // 동맹 구조체
 
 info FRIEND[100]; //동맹 배열
-
 unsigned char num; // 동맹수
-
-char checkChar(char* tmp)
-{
-	char real;
-
-	if (tmp[0] != tmp[1])
-	{
-		if (tmp[0] != tmp[2])
-		{
-			if (tmp[1] == tmp[2])
-			{
-				real = tmp[1];
-			}
-			else
-			{
-				//printf("셋다 틀림 ");
-				real = tmp[1];
-			}
-		}
-		else
-		{
-			real = tmp[0];
-		}
-	}
-	else
-	{
-		real = tmp[0];
-	}
-	return real;
-}
-
 
 void Checkstr_I(char* buffer, int F_num) {
 	char tmp[3];
@@ -73,7 +182,7 @@ void Checkstr_I(char* buffer, int F_num) {
 		tmp[0] = buffer[i];
 		tmp[1] = buffer[i + 1];
 		tmp[2] = buffer[i + 2];
-		FRIEND[F_num].ID[index] = checkChar(tmp);
+		FRIEND[F_num].ID[index] = CheckChar(tmp);
 		index++;
 	}
 } //ID buffer에 저장된 데이터를 추출한다.
@@ -85,25 +194,10 @@ void Checkstr_N(char* buffer, int F_num) {
 		tmp[0] = buffer[i];
 		tmp[1] = buffer[i + 1];
 		tmp[2] = buffer[i + 2];
-		FRIEND[F_num].name[index] = checkChar(tmp);
+		FRIEND[F_num].name[index] = CheckChar(tmp);
 		index++;
 	}
 } //name buffer에 저장된 데이터를 추출한다.
-
-void print() {
-	printf("*FRIENDS LIST*\n");
-	for (int i = 0; i < num; i++) {
-		printf("ID : %s\n", FRIEND[i].ID);
-		printf("NAME : %s\n", FRIEND[i].name);
-		if (FRIEND[i].gender == 'M') {
-			printf("GENDER : MALE\n");
-		}
-		else {
-			printf("GENDER : FEMALE\n");
-		}
-		printf("AGE : %d\n\n", FRIEND[i].age);
-	}
-}
 
 void FRIEND_READ() { // 인코더 파일 읽어오는 함수
 	num = ReadLen(); // 동맹수를 읽어 온다.
@@ -121,8 +215,8 @@ void FRIEND_SAVE() { // buffer에 있는 정보를 걸러서 출력하고자하�
 	for (int i = 0; i < 3; i++) {
 		Checkstr_I(FRIEND[i].buffer, i);
 		Checkstr_N(FRIEND[i].buffer_n, i);
-		FRIEND[i].gender = checkChar(FRIEND[i].buffer_g);
-		FRIEND[i].age = checkChar(FRIEND[i].buffer_age);
+		FRIEND[i].gender = CheckChar(FRIEND[i].buffer_g);
+		FRIEND[i].age = CheckChar(FRIEND[i].buffer_age);
 	}
 }
 
@@ -141,28 +235,9 @@ void fprint() {
 	}
 }
 
-
-
-// 피피티 순서에 해당하는 문자열 이차원으로 선언
-char* ITEM_NAME[] = {
-	"BOMB",
-	"POSTION",
-	"CURE",
-	"BOOK",
-	"SHIELD",
-	"CANNON"
-};
-
-// USER_STATUS_fun 변수
-
-// ITEMS_fun 변수
-unsigned char ITEMS_sort, ITEMS_count, ITEMS_num;
-// FRIENDS LIST 변수
-
 // Description
 #define DES_MAX_SIZE 1000 //description은 1000byte까지 작성할수있다.
 
-//Description
 unsigned char des[DES_MAX_SIZE]; //변형된 description저장할 변수
 unsigned char txt[DES_MAX_SIZE]; //해석한 description저장할 변수
 
@@ -191,6 +266,7 @@ unsigned char CheckUnchar(unsigned char* tmp) { //unchar3개 중 한개출력
 }
 
 
+// 디스크립션
 unsigned char ReadUnchar() { //unchar 3개 읽기
 	unsigned char len[3];
 	unsigned char m_unchar;
@@ -219,7 +295,7 @@ void ArrToTxt() { //파일 해석하기
 	int n = 0; //반복횟수 저장변수
 	int d = 0; //반복문장 가져올 시 처음부터 검사할 변수
 
-	fprintf(fp2, "\n*DESCRIPTION*\n");
+	fprintf(fp2, "*DESCRIPTION*\n");
 	while (des[i]) { //배열 끝까지 반복		
 		if (des[i] >= 'A' && des[i] <= 'Z') { //문자가 반복되지않고 나올때
 			txt[u] = des[i++];
@@ -304,121 +380,6 @@ void ArrToTxt() { //파일 해석하기
 			i++;
 		}
 	}
-}
-
-
-
-// main 함수
-int main(int argc, char* argv[]) {
-	if (argc != 3) {
-		printf("error\n");
-		return 0;
-	}
-
-	modified = argv[1];
-	final_result = argv[2];
-	fp1 = fopen(modified, "rb");
-	fp2 = fopen(final_result, "w+t");
-
-	// 유저 정보 출력
-	Write_USER_STATUS();
-
-	Write_ITEMS();
-
-	// FRIEND
-	FRIEND_READ();
-	FRIEND_SAVE();
-	print();
-	fprint();
-
-	//
-	makedes();
-	ArrToTxt();
-
-	fclose(fp1);
-	fclose(fp2);
-
-	return 0;
-}
-// USER_STATUS 정보를 파일에 쓰는 함수
-void Write_USER_STATUS(void) {
-	unsigned char tmpLen;		//문자열 길이를 받아올 변수
-	fprintf(fp2, "*USER STATUS*\n");
-
-	tmpLen = ReadLen();		// ID의 길이를 읽음
-	ReadStr(tmpLen, "ID");		// ID길이만큼 ID 읽음
-
-	tmpLen = ReadLen();		// 이름의 길이를 읽음
-	ReadStr(tmpLen, "NAME");		// 이름의 길이만큼 이름을 읽음
-
-	tmpLen = ReadLen();		// 성별을 읽고 출력함
-	if (tmpLen == 'M')
-		fprintf(fp2, "GENDER: MALE\n");
-	else if (tmpLen == 'F')
-		fprintf(fp2, "GENDER: FEMALE\n");
-
-	tmpLen = ReadLen();		// 나이를 읽고 출력함
-	fprintf(fp2, "AGE: %d\n", tmpLen);
-
-	tmpLen = ReadLen();		// HP를 읽고 출력함
-	fprintf(fp2, "HP: %d\n", tmpLen);
-
-	tmpLen = ReadLen();		// MP를 읽고 출력함
-	fprintf(fp2, "MP: %d\n", tmpLen);
-
-	unsigned short tmp = ReadShort();	// Coin을 읽고 출력함
-	fprintf(fp2, "COIN: %d\n", tmp);
-
-	fprintf(fp2, "\n");
-}
-// ITEMS 정보를 파일에 쓰는 함수
-void Write_ITEMS(void) {
-	ITEMS_sort = ReadLen();
-	fprintf(fp2, "*ITEMS*\n");
-
-	// sort가 0이면 순서대로 x
-	if (ITEMS_sort == 0)  {
-		ITEMS_count = ReadLen();
-		unsigned char ITEMS[ITEMS_count * 2];    // 배열의 크기를 총 갯수 * 2로 고정
-		for (int i = 0; i < ITEMS_count * 2; i++)
-			ITEMS[i] = ReadLen();
-
-		for (int j = 0; j < ITEMS_count * 2; j++) {
-			fprintf(fp2, "%s : ", ITEM_NAME[ITEMS[j]]);
-			fprintf(fp2, "%d\n", ITEMS[++j]);
-		}
-	}
-
-	// sort가 0이 아니면 순서대로
-	else if (ITEMS_sort != 0) {
-		ITEMS_count = ITEMS_sort;
-		if ((ITEMS_count >= 1) && (ITEMS_count <= 4)) { // ITEMS 갯수가 1이상 4이하일때
-			char ITEMS[6];
-			int T_num = ReadLen(), n = 6;
-			while (n != 0) {
-				ITEMS[--n] = T_num % 2;
-				T_num /= 2;
-			}
-			for (int i = 0; i < 6; i++) {
-				if (ITEMS[i] != 0) {
-					ITEMS_num = ReadLen();
-					fprintf(fp2, "%s : %d\n", ITEM_NAME[i], ITEMS_num);
-				}
-				else
-					continue;
-			}
-		}
-		else if ((ITEMS_count >= 5) && (ITEMS_count <= 6)) { // ITEMS 갯수가 5이상 6이하일때
-			unsigned char ITEMS[6];   // 배열의 크기는 6으로 고정
-			for (int i = 0; i < 6; i++) {
-				ITEMS[i] = ReadLen();   // 차례대로 규칙해소
-				if (ITEMS[i] == 0) // ITEMS배열에 저장된 수가 0이면 출력 x
-					continue;
-				fprintf(fp2, "%s : %d\n", ITEM_NAME[i], ITEMS[i]);
-			}
-		}
-	}
-	fprintf(fp2, "\n");
 }
 
 // 여기서부터는 언이가 코딩한 규칙해소 함수들
