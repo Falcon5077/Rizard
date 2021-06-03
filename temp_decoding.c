@@ -5,26 +5,8 @@
 char* modified;
 char* final_result;
 
-// 피피티 순서에 해당하는 문자열 이차원으로 선언
-char* ITEM_NAME[] = {
-    "BOMB",
-    "POSTION",
-    "CURE",
-    "BOOK",
-    "SHIELD",
-    "CANNON"
-};
-// 파일포인터 선언
 FILE* fp1;
 FILE* fp2;
-// USER_STATUS_fun 변수
-
-// ITEMS_fun 변수
-unsigned char ITEMS_sort, ITEMS_count, ITEMS_num;
-// FRIENDS LIST 변수
-
-// Description
-
 // 규칙해소 함수들
 char CheckChar(char* len);
 unsigned short CheckShort(unsigned short* tmp);
@@ -34,6 +16,135 @@ void ReadStr(char len, char* target);
 // 텍스트 출력 함수
 void Write_USER_STATUS(void);
 void Write_ITEMS(void);
+
+// 기은 
+typedef struct {
+	unsigned char I_length;
+	unsigned char N_length;
+	char ID[255];
+	char name[255];
+	char gender;
+	char age;
+	char buffer [1000];
+	char buffer_n[1000];
+	char buffer_g[3];
+	char buffer_age[3];
+}info; // 동맹 구조체
+
+info FRIEND[100]; //동맹 배열
+
+unsigned char num; // 동맹수
+
+char checkChar(char *tmp)
+{
+	char real;
+
+	if(tmp[0] != tmp[1])
+	{
+		if(tmp[0] != tmp[2])
+		{
+			if(tmp[1] == tmp[2])
+			{
+				real = tmp[1];
+			}
+			else
+			{
+				//printf("셋다 틀림 ");
+				real = tmp[1];
+			}
+		}
+		else
+		{
+			real = tmp[0];
+		}
+	}
+	else
+	{
+		real = tmp[0];
+	}
+	return real;
+}
+
+
+void Checkstr_I(char *buffer,int F_num) {
+	char tmp[3];
+	int index = 0;
+	for(int i = 0; buffer[i] !=0; i = i + 3) {
+			tmp[0] = buffer[i];
+			tmp[1] = buffer[i+1];
+			tmp[2] = buffer[i+2];
+			FRIEND[F_num].ID[index]= checkChar(tmp);
+			index++;
+	}
+} //ID buffer에 저장된 데이터를 추출한다.
+
+void Checkstr_N(char *buffer,int F_num) {
+	char tmp[3];
+	int index = 0;
+	for(int i =0; buffer[i] !=0; i = i+3) {
+		tmp[0] = buffer[i];
+		tmp[1] = buffer[i+1];
+		tmp[2] = buffer[i+2];
+		FRIEND[F_num].name[index] = checkChar(tmp);
+		index++;
+	}
+} //name buffer에 저장된 데이터를 추출한다.
+
+void FRIEND_READ() { // 인코더 파일 읽어오는 함수
+	num = ReadLen(); // 동맹수를 읽어 온다.
+	int x = 0;
+	for(int i = 0; i < num; i++) {
+		FRIEND[i].I_length = ReadLen();
+		fread(FRIEND[i].buffer,sizeof(char), FRIEND[i].I_length * 3 ,fp2);
+		FRIEND[i].N_length = ReadLen();
+		fread(FRIEND[i].buffer_n,sizeof(char), FRIEND[i].N_length *3 ,fp2);
+		fread(FRIEND[i].buffer_g,sizeof(char),3,fp2);
+		fread(FRIEND[i].buffer_age,sizeof(char),3,fp2);
+	}
+}
+void FRIEND_SAVE() { // buffer에 있는 정보를 걸러서 출력하고자하는 구조체에 저장
+	for(int i = 0; i < 3; i++) {
+		Checkstr_I(FRIEND[i].buffer,i);
+		Checkstr_N(FRIEND[i].buffer_n,i);
+		FRIEND[i].gender = checkChar(FRIEND[i].buffer_g);
+		FRIEND[i].age = checkChar(FRIEND[i].buffer_age);	
+	}
+}
+
+void fprint() {
+	fprintf(fp2,"*FRIENDS LIST*\n");
+	for(int i = 0; i<num; i++) {
+		fprintf(fp2,"FRIEND%d ID: %s\n",i+1,FRIEND[i].ID);
+		fprintf(fp2,"FRIEND%d NAME: %s\n",i+1,FRIEND[i].name);
+		if(FRIEND[i].gender=='M') {
+			fprintf(fp2,"FRIEND%d GENDER: MALE\n",i+1);
+		}
+		else {
+			fprintf(fp2,"FRIEND%d GENDER: FEMALE\n",i+1);
+		}
+		fprintf(fp2,"FRIEND%d AGE : %d\n\n",i+1,FRIEND[i].age);
+	}
+}
+
+
+
+// 피피티 순서에 해당하는 문자열 이차원으로 선언
+char* ITEM_NAME[] = {
+    "BOMB",
+    "POSTION",
+    "CURE",
+    "BOOK",
+    "SHIELD",
+    "CANNON"
+};
+
+// USER_STATUS_fun 변수
+
+// ITEMS_fun 변수
+unsigned char ITEMS_sort, ITEMS_count, ITEMS_num;
+// FRIENDS LIST 변수
+
+// Description
 
 // main 함수
 int main(int argc, char* argv[]) {
@@ -49,7 +160,11 @@ int main(int argc, char* argv[]) {
 
     // 유저 정보 출력
 	Write_USER_STATUS();
-	Write_ITEMS();
+//	Write_ITEMS();
+
+	FRIEND_READ();
+	FRIEND_SAVE();
+	fprint();
 
     fclose(fp1);
     fclose(fp2);
@@ -151,7 +266,8 @@ char CheckChar(char* tmp)      // tmp 가 KKK 이면
             }
             else
             {
-                printf("셋다 틀림");
+               // printf("셋다 틀림");
+				real = tmp[1];
             }
         }
         else   // 0이랑 2가 같다면 real에 0을 넣어서 리턴 (KXK) 의 경우
@@ -181,7 +297,8 @@ unsigned short CheckShort(unsigned short* tmp)		// tmp 가 KKK 이면
             }
             else
             {
-                printf("셋다 틀림 ");
+                //printf("셋다 틀림 ");
+				real = tmp[1];
             }
         }
         else	// 0이랑 2가 같다면 real에 0을 넣어서 리턴 (KXK) 의 경우
