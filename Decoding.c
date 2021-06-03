@@ -100,7 +100,7 @@ unsigned char ITEMS_sort, ITEMS_count, ITEMS_num;
 
 char* ITEM_NAME[] = {
 	"BOMB",
-	"POSTION",
+	"POTION",
 	"CURE",
 	"BOOK",
 	"SHIELD",
@@ -120,7 +120,7 @@ void Write_ITEMS(void) {
 			ITEMS[i] = ReadLen();
 
 		for (int j = 0; j < ITEMS_count * 2; j++) {
-			fprintf(fp2, "%s : ", ITEM_NAME[ITEMS[j]]);
+			fprintf(fp2, "%s: ", ITEM_NAME[ITEMS[j]]);
 			fprintf(fp2, "%d\n", ITEMS[++j]);
 		}
 	}
@@ -138,7 +138,7 @@ void Write_ITEMS(void) {
 			for (int i = 0; i < 6; i++) {
 				if (ITEMS[i] != 0) {
 					ITEMS_num = ReadLen();
-					fprintf(fp2, "%s : %d\n", ITEM_NAME[i], ITEMS_num);
+					fprintf(fp2, "%s: %d\n", ITEM_NAME[i], ITEMS_num);
 				}
 				else
 					continue;
@@ -150,7 +150,7 @@ void Write_ITEMS(void) {
 				ITEMS[i] = ReadLen();   // 차례대로 규칙해소
 				if (ITEMS[i] == 0) // ITEMS배열에 저장된 수가 0이면 출력 x
 					continue;
-				fprintf(fp2, "%s : %d\n", ITEM_NAME[i], ITEMS[i]);
+				fprintf(fp2, "%s: %d\n", ITEM_NAME[i], ITEMS[i]);
 			}
 		}
 	}
