@@ -77,8 +77,18 @@ int main(int argc, char *argv[]) {
 									 exit(1);
 								 }
 								 user[count_user] = &tmp[2];
+								
+								 if(strcmp(user[count_user],"FEMALE\n") == 0) {
+									 user[count_user] = "F\n";
+								 }
+
+								 else if(strcmp(user[count_user], "MALE\n") == 0) {
+									 user[count_user] = "M\n";
+								 }
+
 								 for(int k = 0; k < strlen(user[count_user]); k++)
 									 user_buff[v++] = user[count_user][k];
+
 							 }
 							 break;
 
@@ -99,6 +109,15 @@ int main(int argc, char *argv[]) {
 									 exit(1);
 								 }
 								 friend[count_friend] = &tmp[2];
+
+								 if(strcmp(friend[count_friend],"FEMALE\n") == 0) {
+									 friend[count_friend] = "F\n";
+								 }
+
+								 else if(strcmp(friend[count_friend], "MALE\n") == 0) {
+									 friend[count_friend] = "M\n";
+								 }
+
 								 for(int k = 0; k < strlen(friend[count_friend]); k++) 
 									 friend_buff[z++] = friend[count_friend][k];
 
