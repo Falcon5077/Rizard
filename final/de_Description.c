@@ -164,9 +164,6 @@ int main(){
 	makedes();
 	ArrToTxt();
 
-	//printf("%s\n", des);
-	//printf("%s\n", txt);
-
 	fclose(fp1);
 	return 0;
 }
