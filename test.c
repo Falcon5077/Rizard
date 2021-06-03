@@ -19,7 +19,7 @@ FILE *fp;
 
 void Read_data(unsigned char count_fnum, info* pFRIEND);
 void Write_data(unsigned char count_fnum, info* pFRIEND);
-void WriteStr(unsigned char len, char* str);
+void WriteStr(unsigned char len, unsigned char* str);
 void WriteChar(unsigned char len);
 
 // main 함수
@@ -43,7 +43,7 @@ void Read_data(unsigned char count_fnum, info* pFRIEND){
 	unsigned char *temp;
 	int count = 0;
 
-	for (int i = 0; i < count_fnum; i++){
+	for (int i = 0; i < 2; i++){
 	
 		if (count == 0){
 			temp = strtok(friend_buff, "\n"); // KMU_CS1 까지 짜른다. 템프에 저장, 
@@ -80,7 +80,7 @@ void Write_data(unsigned char count_fnum, info *pFRIEND){
 
 	WriteChar(count_fnum);		// 동맹수
 
-	for (int i = 0; i < count_fnum; i++)	{		// 동맹 수 만큼 반복
+	for (int i = 0; i < 2; i++)	{		// 동맹 수 만큼 반복
 			
 		WriteChar(pFRIEND->ID_len);		// 아이디 길이
 		WriteStr(pFRIEND->ID_len, pFRIEND->ID);		// 아이디
@@ -96,7 +96,7 @@ void Write_data(unsigned char count_fnum, info *pFRIEND){
 }
 
 // 문장입력
-void WriteStr(unsigned char len, char* str) {
+void WriteStr(unsigned char len, unsigned char* str) {
 
 	for(int i = 0; i < len; i++) {
 
