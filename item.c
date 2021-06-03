@@ -19,7 +19,6 @@ char* Items[] = {
 FILE* fp1;
 FILE* fp2;
 
-int i;
 char* str; // 자른 문자열 저장하는 변수
 char count = 0; // 아이템 총 개수 저장하는 변수
 char Item_list[255] = { 0 };    // 텍스트파일을 일자로 붙인 문자열(구분은 /로 구분)
@@ -121,7 +120,7 @@ void Check_Item(void) {
 }
 
 char Check_Item_sort(void) {
-    int num;
+    int i, num;
     char tmp_count[6] = { 0 }; // ptr과 Items[i]와 같을때의 i값
     int for_count = 0; // for문 돌아가는 횟수
     char sort = 0;
@@ -231,4 +230,3 @@ void WriteChar(unsigned char len) {
     for (int i = 0; i < 3; i++)
         fwrite(&len, 1, sizeof(unsigned char), fp2);
 }
-
