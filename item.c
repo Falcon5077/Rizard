@@ -225,3 +225,4 @@ void WriteChar(unsigned char len) {
     for (int i = 0; i < 3; i++)
         fwrite(&len, 1, sizeof(unsigned char), fp2);
 }
+
