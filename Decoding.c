@@ -358,7 +358,8 @@ void ArrToTxt() { //파일 해석하기
 			}
 		}
 		else if (des[i] == '=') { //문장반복구문 나올경우
-			n = des[i + 1];
+				d = 0;
+				n = des[i + 1];
 
 			while (n != 1) {
 				if (txt[d] == '\n') {
