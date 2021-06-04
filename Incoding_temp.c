@@ -330,8 +330,8 @@ void checkout_buff(unsigned char* buff, unsigned char* script) { //파일로 부
 		count++;
 		if (strA != script[k]) {
 			if (strA > 47 && strA < 58) { //입력된 값이 숫자인경우
-				if (count - 1 == 1) buff[x++] = strA - 20; //같은 갯수가 1개인경우 ASCII 값에서 20빼기
-				if (count - 1 == 2) buff[x++] = strA - 10; //같은 갯수가 2개인경우 ASCII값에서 10빼기
+				if (count - 1 == 1) buff[x++] = strA - 10; //같은 갯수가 1개인경우 ASCII 값에서 10빼기
+				if (count - 1 == 2) buff[x++] = strA - 20; //같은 갯수가 2개인경우 ASCII값에서 20빼기
 				if (count - 1 >= 3) { //반복되는 숫자가 세개 이상일 경우
 					buff[x++] = strA - 10; //ASCII값 10빼고 갯수 저장
 					if (count - 1 == 10) buff[x++] = 126;
