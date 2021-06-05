@@ -442,22 +442,22 @@ int main(int argc, char* argv[]) {
 		if (test == NULL) {
 			break;
 		}
-		if (strstr(test, "*USER STATUS*")) {								//필드 검사 if문
+		if (strstr(test, "*USER STATUS*")) { //필드 검사 if문
 			++index;
 			continue;
 		}
 
-		else if (strstr(test, "*ITEMS*")) {								//필드 검사 if문
+		else if (strstr(test, "*ITEMS*")) {
 			++index;
 			continue;
 		}
 
-		else if (strstr(test, "*FRIENDS LIST*")) {								//필드 검사 if문
+		else if (strstr(test, "*FRIENDS LIST*")) {
 			++index;
 			continue;
 		}
 
-		else if (strstr(test, "*DESCRIPTION*")) {								//필드 검사 if문
+		else if (strstr(test, "*DESCRIPTION*")) {
 			++index;
 			continue;
 		}
