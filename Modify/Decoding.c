@@ -21,8 +21,8 @@ void ArrToTxt();
 char CheckChar(char* tmp);
 unsigned short CheckShort(unsigned short* tmp);
 unsigned short ReadShort();
-char ReadLen();
-void ReadStr(char len, char* target);
+char ReadLen();	// char 1바이트 읽는 함수
+void ReadStr(char len, char* target); // char를 len 길이만큼 읽는 함수
 #define MAX 255
 
 FILE* fp1;
@@ -75,9 +75,9 @@ void Write_USER_STATUS(void) {
 	ReadStr(tmpLen, "NAME");		// 이름의 길이만큼 이름을 읽음
 
 	tmpLen = ReadLen();		// 성별을 읽고 출력함
-	if (tmpLen == 'M')
+	if (tmpLen == 'M')		// 읽은 char 값이 M이면 MALE
 		fprintf(fp2, "GENDER: MALE\n");
-	else if (tmpLen == 'F')
+	else if (tmpLen == 'F')	// F면 FEMALE 출력
 		fprintf(fp2, "GENDER: FEMALE\n");
 
 	tmpLen = ReadLen();		// 나이를 읽고 출력함
@@ -89,8 +89,8 @@ void Write_USER_STATUS(void) {
 	tmpLen = ReadLen();		// MP를 읽고 출력함
 	fprintf(fp2, "MP: %d\n", tmpLen);
 
-	unsigned short tmp = ReadShort();	// Coin을 읽고 출력함
-	fprintf(fp2, "COIN: %d\n", tmp);
+	unsigned short tmp = ReadShort();	// unsigned short 타입
+	fprintf(fp2, "COIN: %d\n", tmp);	// Coin을 읽고 출력함
 
 	fprintf(fp2, "\n");
 }
@@ -456,7 +456,7 @@ unsigned short ReadShort() {
 	return m_short;
 }
 
-char ReadLen() {	// Check 함수 먼저 읽으3 {
+char ReadLen() {	// char를 1바이트 읽는 함수
 	char len[3];
 	unsigned char m_len;
 
@@ -468,17 +468,17 @@ char ReadLen() {	// Check 함수 먼저 읽으3 {
 	return m_len;
 }
 
-void ReadStr(char len, char* target) {
+void ReadStr(char len, char* target) {	// 읽을 문자열 길이 len과 필드명 target
 	unsigned char str[255] = " ";
 
-	for (int p = 0; p < len; p++) {
+	for (int p = 0; p < len; p++) {		// 문자열 길이 만큼 반복
 		char temp[3];
 
 		for (int k = 0; k < 3; k++)
 			fread(&temp[k], sizeof(unsigned char), 1, fp1);
 
-		char a = CheckChar(&temp[0]);
-		str[p] = a;
+		char a = CheckChar(&temp[0]);	// 읽어온 char 3개를 Check 함수로 보내서 복원시킴
+		str[p] = a;	// 복원 시킨 값을 str[p]에 저장해서 문자열을 완성
 	}
 	fprintf(fp2, "%s: %s\n", target, str);
 }
