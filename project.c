@@ -35,7 +35,6 @@ char checkChar(char *tmp)
 			}
 			else 
 			{
-				printf("셋다 틀림 ");
 				real = tmp[2];
 			}
 		}
