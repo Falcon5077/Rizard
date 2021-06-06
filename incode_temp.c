@@ -399,6 +399,8 @@ void repeat_characters(unsigned char *buff) {	//BBCBBCBBCBBC -> BBC*3
 			strcpy(tpsave[i++], temp);
 		temp = strtok(NULL, "\n")
 	}
+
+
 }
 
 void insert_file(unsigned char* buff) { //파일.... 넣을게...
