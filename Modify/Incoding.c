@@ -12,38 +12,44 @@ char* Items[] = {
    "CANNON"
 };
 
+// User Status 저장될 변수
 unsigned char idLen;
-unsigned char id[255];
+unsigned char id[256];
 unsigned char nameLen;
-unsigned char name[255];
+unsigned char name[256];
 unsigned char genderLen;
-unsigned char gender[255];
+unsigned char gender[256];
 unsigned char age;
-unsigned char age_u[255];
+unsigned char age_u[256];
 unsigned char HP;
-unsigned char HP_u[255];
+unsigned char HP_u[256];
 unsigned char MP;
-unsigned char MP_u[255];
+unsigned char MP_u[256];
 unsigned short coin;
-unsigned char coin_u[255];
-unsigned char user_buff[1000], friend_buff[1000];
+unsigned char coin_u[256];
+unsigned char user_buff[1000], friend_buff[100000];
 
 // Friend List 구조체
 typedef struct {
 	unsigned char ID_len;
-	unsigned char ID[255];
+	unsigned char ID[256];
 	unsigned char NAME_len;
-	unsigned char NAME[255];
-	unsigned char GENDER[255];
+	unsigned char NAME[256];
+	unsigned char GENDER[256];
 	unsigned char GENDER_len;
 	unsigned char AGE;
 }info;
 
+// Friend List 구조체를 받아와서 동맹수만큼 쓰는 함수
 void Read_Friend(unsigned char count_fnum, info* pFRIEND);
 void Write_Friend(unsigned char count_fnum, info* pFRIEND);
+
+// 약속된 방식으로 파일에 쓰는 함수
 void WriteStr(unsigned char len, unsigned char* str);
 void WriteChar(unsigned char len);
 void WriteShort(unsigned short s_len);
+
+// User Status 함수
 void Write_User();
 void Read_User();
 
@@ -60,8 +66,7 @@ char CP_Item_list[255] = { 0 }; // Item_list의 내용이 복사된 문자열
 unsigned char tmp_item_count[6] = { 0 }; // 아이템별 개수 저장하는 배열 (비어있으면 땡겨와서 저장)
 
 // Friend List 전역 변수
-unsigned char AGE_f[255]; // AGE를 문자열 202020이 아닌 숫자 ^T^T^T로 출력 atoi 사용
-int count_fnum = 2;		// 동맹수 - 현재 임의 설정
+unsigned char AGE_f[256]; // AGE를 문자열 202020이 아닌 숫자 ^T^T^T로 출력 atoi 사용
 
 // FILE
 FILE* fp2;
@@ -71,7 +76,7 @@ void Read_User() {
 
 	unsigned char* temp;
 
-	temp = strtok(user_buff, "\n");
+	temp = strtok(user_buff, "\n"); // 순서대로 temp에 저장하여 \n까지의 문자열을 변수에 저장
 	strcpy(id, temp);
 
 	temp = strtok(NULL, "\n");
@@ -80,11 +85,11 @@ void Read_User() {
 	temp = strtok(NULL, "\n");
 	strcpy(gender, temp);
 
-	temp = strtok(NULL, "\n"); // atoi로 문자 배열에서 int형 숫자로 변환
-	strcpy(age_u, temp);
-	age = atoi(age_u);
-
 	temp = strtok(NULL, "\n");
+	strcpy(age_u, temp);
+	age = atoi(age_u); // atoi로 문자 배열에서 int형 숫자로 변환
+
+	temp = strtok(NULL, "\n"); 
 	strcpy(HP_u, temp);
 	HP = atoi(HP_u);
 
@@ -118,7 +123,6 @@ void Write_User() {
 	WriteChar(MP); // MP 저장
 
 	WriteShort(coin); // coin 저장
-
 }
 
 // Item 함수
@@ -229,12 +233,12 @@ void Write_Item(char sort) {
 // Friend List Read 함수
 void Read_Friend(unsigned char count_fnum, info* pFRIEND) {
 
-	unsigned char* temp;
+	unsigned char* temp; // 순서대로 temp에 저장하여 \n까지의 문자열을 구조체에 저장
 	int count = 0;
 
-	for (int i = 0; i < count_fnum; i++) {
+	for (int i = 0; i < count_fnum; i++) { // 동맹수만큼 FRIEND 구조체에 작성
 
-		if (count == 0) {	// count를 설정, friend_buff 첫 부분부터 시작, 다음 반복 실행 시 NULL부터 실행
+		if (count == 0) { // count를 설정, friend_buff 첫 부분부터 시작, 다음 반복 실행 시 NULL부터 실행
 			temp = strtok(friend_buff, "\n");
 			strcpy(pFRIEND->ID, temp);
 			count++;
@@ -244,7 +248,7 @@ void Read_Friend(unsigned char count_fnum, info* pFRIEND) {
 			strcpy(pFRIEND->ID, temp);
 		}
 
-		temp = strtok(NULL, "\n");
+		temp = strtok(NULL, "\n"); 
 		strcpy(pFRIEND->NAME, temp);
 
 		pFRIEND->ID_len = strlen(pFRIEND->ID);
@@ -255,58 +259,51 @@ void Read_Friend(unsigned char count_fnum, info* pFRIEND) {
 
 		temp = strtok(NULL, "\n");
 		strcpy(AGE_f, temp);
-
 		pFRIEND->AGE = atoi(AGE_f); // atoi로 문자 배열에서 int형 숫자로 변환
 
 		pFRIEND->GENDER_len = strlen(pFRIEND->GENDER);
 
-		pFRIEND++;	// 구조체 배열 1 증가. ex) FRIEND[0] 에서 [1]로
+		pFRIEND++; // 구조체 배열 1 증가.
 	}
 }
 
 // Friend List Write 함수
 void Write_Friend(unsigned char count_fnum, info* pFRIEND) {
 
-	WriteChar(count_fnum);		// 동맹수
+	WriteChar(count_fnum); // 동맹수
 
-	for (int i = 0; i < count_fnum; i++) {		// 동맹 수 만큼 반복
+	for (int i = 0; i < count_fnum; i++) { // 동맹 수 만큼 반복
 
-		WriteChar(pFRIEND->ID_len);		// 아이디 길이
-		WriteStr(pFRIEND->ID_len, pFRIEND->ID);		// 아이디
+		WriteChar(pFRIEND->ID_len); // 아이디 길이
+		WriteStr(pFRIEND->ID_len, pFRIEND->ID); // 아이디
 
-		WriteChar(pFRIEND->NAME_len);		// 이름 길이
-		WriteStr(pFRIEND->NAME_len, pFRIEND->NAME);		// 이름
+		WriteChar(pFRIEND->NAME_len); // 이름 길이
+		WriteStr(pFRIEND->NAME_len, pFRIEND->NAME); // 이름
 
-		WriteStr(pFRIEND->GENDER_len, pFRIEND->GENDER);		// 성별
-		WriteChar(pFRIEND->AGE);		// 나이
+		WriteStr(pFRIEND->GENDER_len, pFRIEND->GENDER); // 성별
+		WriteChar(pFRIEND->AGE); // 나이
 
-		pFRIEND++;
+		pFRIEND++; // 구조체 배열 1 증가.
 	}
 }
 
-// User Status, Friend List 저장 함수 ( 반복 저장 )
+// User Status, Items, Friend List 저장 함수 ( 반복 저장 )
 void WriteChar(unsigned char len) {
-
 	for (int i = 0; i < 3; i++)
 		fwrite(&len, 1, sizeof(unsigned char), fp2);
-
 }
 
 // User Status - coin 저장 함수 ( 0 ~ 65535 )
 void WriteShort(unsigned short s_len) {
-
 	for (int i = 0; i < 3; i++)
 		fwrite(&s_len, 1, sizeof(unsigned short), fp2);
-
 }
 
 // User Status, Friend List 저장 함수 ( 길이만큼 더 반복 저장 )
 void WriteStr(unsigned char len, unsigned char* str) {
-
 	for (int i = 0; i < len; i++) {
 		for (int j = 0; j < 3; j++) {
 			fwrite(&str[i], 1, sizeof(unsigned char), fp2);
-
 		}
 	}
 }
