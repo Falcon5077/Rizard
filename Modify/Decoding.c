@@ -94,65 +94,67 @@ void Write_USER_STATUS(void) {
 }
 
 // 아이템 변수
-unsigned char ITEMS_sort, ITEMS_count, ITEMS_num;
+// 앞에서부터 아이템 순서를 인지하는 변수, 아이템 총 개수, 아이템별 개수 저장하는 변수
+unsigned char ITEMS_sort, ITEMS_count, ITEMS_num; 
 
+// 순서대로 ITEM_NAME[0] ~ ITEM_NAME[5]
 char* ITEM_NAME[] = {
-	"BOMB",
-	"POTION",
-	"CURE",
-	"BOOK",
-	"SHIELD",
-	"CANNON"
+   "BOMB",
+   "POTION",
+   "CURE",
+   "BOOK",
+   "SHIELD",
+   "CANNON"
 };
 
-// 아이템
+// 아이템 디코딩 함수
 void Write_ITEMS(void) {
-	ITEMS_sort = ReadUnchar();
-	fprintf(fp2, "*ITEMS*\n");
+   ITEMS_sort = ReadLen(); // 파일에 있는 순서를 ITEM_sort 변수에 불러오고, 
+   fprintf(fp2, "*ITEMS*\n");
 
-	// sort가 0이면 순서대로 x
-	if (ITEMS_sort == 0)  {
-		ITEMS_count = ReadUnchar();
-		unsigned char ITEMS[ITEMS_count * 2];    // 배열의 크기를 총 갯수 * 2로 고정
-		for (int i = 0; i < ITEMS_count * 2; i++)
-			ITEMS[i] = ReadUnchar();
+   // ITEM_sort 값이 0이면 본래의 텍스트가 ITEM_NAME[]의 문자열 순서대로 정렬되지 않음을 의미
+   if (ITEMS_sort == 0) {
+      ITEMS_count = ReadLen(); // 파일에 있는 아이템 개수를 ITEMS_count에 저장
+      unsigned char ITEMS[ITEMS_count * 2];    // 배열의 크기를 ITEMS_count * 2로 선언
+      for (int i = 0; i < ITEMS_count * 2; i++)
+         ITEMS[i] = ReadLen(); // ITEMS[]에 차례대로 아이템 종류와 개수를 입력
 
-		for (int j = 0; j < ITEMS_count * 2; j++) {
-			fprintf(fp2, "%s: ", ITEM_NAME[ITEMS[j]]);
-			fprintf(fp2, "%d\n", ITEMS[++j]);
-		}
-	}
+      for (int j = 0; j < ITEMS_count * 2; j++) {
+         fprintf(fp2, "%s: ", ITEM_NAME[ITEMS[j]]);
+         fprintf(fp2, "%d\n", ITEMS[++j]);
+      }
+   }
 
-	// sort가 0이 아니면 순서대로
-	else if (ITEMS_sort != 0) {
-		ITEMS_count = ITEMS_sort;
-		if ((ITEMS_count >= 1) && (ITEMS_count <= 4)) { // ITEMS 갯수가 1이상 4이하일때
-			char ITEMS[6];
-			int T_num = ReadUnchar(), n = 6;
-			while (n != 0) {
-				ITEMS[--n] = T_num % 2;
-				T_num /= 2;
-			}
-			for (int i = 0; i < 6; i++) {
-				if (ITEMS[i] != 0) {
-					ITEMS_num = ReadUnchar();
-					fprintf(fp2, "%s: %d\n", ITEM_NAME[i], ITEMS_num);
-				}
-				else
-					continue;
-			}
-		}
-		else if ((ITEMS_count >= 5) && (ITEMS_count <= 6)) { // ITEMS 갯수가 5이상 6이하일때
-			unsigned char ITEMS[6];   // 배열의 크기는 6으로 고정
-			for (int i = 0; i < 6; i++) {
-				ITEMS[i] = ReadUnchar();   // 차례대로 규칙해소
-				if (ITEMS[i] == 0) // ITEMS배열에 저장된 수가 0이면 출력 x
-					continue;
-				fprintf(fp2, "%s: %d\n", ITEM_NAME[i], ITEMS[i]);
-			}
-		}
-	}
-	fprintf(fp2, "\n");
+   // ITEM_sort 값이 0이 아니면 본래의 텍스트가 ITEM_NAME[]의 문자열 순서대로 정렬됐음을 의미
+   else if (ITEMS_sort != 0) {
+      ITEMS_count = ITEMS_sort; // ITEMS_sort가 0이 아닌 경우 바로 총 개수로 인지하고 ITEMS_count에 대입
+      if ((ITEMS_count >= 1) && (ITEMS_count <= 4)) { // ITEMS 갯수가 1이상 4이하일때
+         char ITEMS[6]; // 10진수 값을 소인수분해해서 ITEMS배열에 저장
+         int T_num = ReadLen(), n = 6; // 파일에서 10진수 값을 받아와서
+         while (n != 0) {
+            ITEMS[--n] = T_num % 2; // 10진수 값을 2진수 형태로 소인수 분해
+            T_num /= 2;
+         }
+         for (int i = 0; i < 6; i++) {
+            if (ITEMS[i] != 0) { // 2진수 값이 1일 경우
+               ITEMS_num = ReadLen(); // ITEMS_num를 읽어와서
+               fprintf(fp2, "%s: %d\n", ITEM_NAME[i], ITEMS_num); // 아이템 이름과 개수를 출력
+            }
+            else
+               continue; // 2진수 값이 1이 아닐경우, 즉 0일경우 출력하지 않고 건너뜀
+         }
+      }
+      else if ((ITEMS_count >= 5) && (ITEMS_count <= 6)) { // ITEMS 갯수가 5이상 6이하일때
+         unsigned char ITEMS[6];   // 배열의 크기는 6으로 고정
+         for (int i = 0; i < 6; i++) { // 저장된 형태는 배열 6개에 아이템별 개수만 저장되어 있으므로
+            ITEMS[i] = ReadLen();   // 차례대로 압축규칙 해소
+            if (ITEMS[i] == 0) // ITEMS배열에 저장된 수가 0이면 출력 x
+               continue;
+            fprintf(fp2, "%s: %d\n", ITEM_NAME[i], ITEMS[i]); // 0이 아니면 출력
+         }
+      }
+   }
+   fprintf(fp2, "\n"); // 줄바꿈 출력
 }
 
 
