@@ -18,10 +18,8 @@ unsigned char ReadUnchar();
 void makedes();
 void ArrToTxt();
 
-char CheckChar(char* tmp);
 unsigned short CheckShort(unsigned short* tmp);
 unsigned short ReadShort();
-char ReadLen();	// char 1바이트 읽는 함수
 void ReadStr(char len, char* target); // char를 len 길이만큼 읽는 함수
 #define MAX 255
 
@@ -68,25 +66,25 @@ void Write_USER_STATUS(void) {
 	unsigned char tmpLen;		//문자열 길이를 받아올 변수
 	fprintf(fp2, "*USER STATUS*\n");
 
-	tmpLen = ReadLen();		// ID의 길이를 읽음
+	tmpLen = ReadUnchar();		// ID의 길이를 읽음
 	ReadStr(tmpLen, "ID");		// ID길이만큼 ID 읽음
 
-	tmpLen = ReadLen();		// 이름의 길이를 읽음
+	tmpLen = ReadUnchar();		// 이름의 길이를 읽음
 	ReadStr(tmpLen, "NAME");		// 이름의 길이만큼 이름을 읽음
 
-	tmpLen = ReadLen();		// 성별을 읽고 출력함
+	tmpLen = ReadUnchar();		// 성별을 읽고 출력함
 	if (tmpLen == 'M')		// 읽은 char 값이 M이면 MALE
 		fprintf(fp2, "GENDER: MALE\n");
 	else if (tmpLen == 'F')	// F면 FEMALE 출력
 		fprintf(fp2, "GENDER: FEMALE\n");
 
-	tmpLen = ReadLen();		// 나이를 읽고 출력함
+	tmpLen = ReadUnchar();		// 나이를 읽고 출력함
 	fprintf(fp2, "AGE: %d\n", tmpLen);
 
-	tmpLen = ReadLen();		// HP를 읽고 출력함
+	tmpLen = ReadUnchar();		// HP를 읽고 출력함
 	fprintf(fp2, "HP: %d\n", tmpLen);
 
-	tmpLen = ReadLen();		// MP를 읽고 출력함
+	tmpLen = ReadUnchar();		// MP를 읽고 출력함
 	fprintf(fp2, "MP: %d\n", tmpLen);
 
 	unsigned short tmp = ReadShort();	// unsigned short 타입
@@ -109,15 +107,15 @@ char* ITEM_NAME[] = {
 
 // 아이템
 void Write_ITEMS(void) {
-	ITEMS_sort = ReadLen();
+	ITEMS_sort = ReadUnchar();
 	fprintf(fp2, "*ITEMS*\n");
 
 	// sort가 0이면 순서대로 x
 	if (ITEMS_sort == 0)  {
-		ITEMS_count = ReadLen();
+		ITEMS_count = ReadUnchar();
 		unsigned char ITEMS[ITEMS_count * 2];    // 배열의 크기를 총 갯수 * 2로 고정
 		for (int i = 0; i < ITEMS_count * 2; i++)
-			ITEMS[i] = ReadLen();
+			ITEMS[i] = ReadUnchar();
 
 		for (int j = 0; j < ITEMS_count * 2; j++) {
 			fprintf(fp2, "%s: ", ITEM_NAME[ITEMS[j]]);
@@ -130,14 +128,14 @@ void Write_ITEMS(void) {
 		ITEMS_count = ITEMS_sort;
 		if ((ITEMS_count >= 1) && (ITEMS_count <= 4)) { // ITEMS 갯수가 1이상 4이하일때
 			char ITEMS[6];
-			int T_num = ReadLen(), n = 6;
+			int T_num = ReadUnchar(), n = 6;
 			while (n != 0) {
 				ITEMS[--n] = T_num % 2;
 				T_num /= 2;
 			}
 			for (int i = 0; i < 6; i++) {
 				if (ITEMS[i] != 0) {
-					ITEMS_num = ReadLen();
+					ITEMS_num = ReadUnchar();
 					fprintf(fp2, "%s: %d\n", ITEM_NAME[i], ITEMS_num);
 				}
 				else
@@ -147,7 +145,7 @@ void Write_ITEMS(void) {
 		else if ((ITEMS_count >= 5) && (ITEMS_count <= 6)) { // ITEMS 갯수가 5이상 6이하일때
 			unsigned char ITEMS[6];   // 배열의 크기는 6으로 고정
 			for (int i = 0; i < 6; i++) {
-				ITEMS[i] = ReadLen();   // 차례대로 규칙해소
+				ITEMS[i] = ReadUnchar();   // 차례대로 규칙해소
 				if (ITEMS[i] == 0) // ITEMS배열에 저장된 수가 0이면 출력 x
 					continue;
 				fprintf(fp2, "%s: %d\n", ITEM_NAME[i], ITEMS[i]);
@@ -182,7 +180,7 @@ void Checkstr_I(char* buffer, int F_num) {
 		tmp[0] = buffer[i];
 		tmp[1] = buffer[i + 1];
 		tmp[2] = buffer[i + 2];
-		FRIEND[F_num].ID[index] = CheckChar(tmp);
+		FRIEND[F_num].ID[index] = CheckUnchar(tmp);
 		index++;
 	}
 } //ID buffer에 저장된 데이터를 추출한다.
@@ -194,18 +192,18 @@ void Checkstr_N(char* buffer, int F_num) {
 		tmp[0] = buffer[i];
 		tmp[1] = buffer[i + 1];
 		tmp[2] = buffer[i + 2];
-		FRIEND[F_num].name[index] = CheckChar(tmp);
+		FRIEND[F_num].name[index] = CheckUnchar(tmp);
 		index++;
 	}
 } //name buffer에 저장된 데이터를 추출한다.
 
 void FRIEND_READ() { // 인코더 파일 읽어오는 함수
-	num = ReadLen(); // 동맹수를 읽어 온다.
+	num = ReadUnchar(); // 동맹수를 읽어 온다.
 	int x = 0;
 	for (int i = 0; i < num; i++) {
-		FRIEND[i].I_length = ReadLen();
+		FRIEND[i].I_length = ReadUnchar();
 		fread(FRIEND[i].buffer, sizeof(char), FRIEND[i].I_length * 3, fp1);
-		FRIEND[i].N_length = ReadLen();
+		FRIEND[i].N_length = ReadUnchar();
 		fread(FRIEND[i].buffer_n, sizeof(char), FRIEND[i].N_length * 3, fp1);
 		fread(FRIEND[i].buffer_g, sizeof(char), 3, fp1);
 		fread(FRIEND[i].buffer_age, sizeof(char), 3, fp1);
@@ -215,8 +213,8 @@ void FRIEND_SAVE() { // buffer에 있는 정보를 걸러서 출력하고자하�
 	for (int i = 0; i < 3; i++) {
 		Checkstr_I(FRIEND[i].buffer, i);
 		Checkstr_N(FRIEND[i].buffer_n, i);
-		FRIEND[i].gender = CheckChar(FRIEND[i].buffer_g);
-		FRIEND[i].age = CheckChar(FRIEND[i].buffer_age);
+		FRIEND[i].gender = CheckUnchar(FRIEND[i].buffer_g);
+		FRIEND[i].age = CheckUnchar(FRIEND[i].buffer_age);
 	}
 }
 
@@ -250,7 +248,7 @@ unsigned char CheckUnchar(unsigned char* tmp) { //unchar3개 중 한개출력
 				real = tmp[1];
 			}
 			else {
-				real = '^';
+				real = tmp[1];
 			}
 		}
 		else {
@@ -381,38 +379,6 @@ void ArrToTxt() { //파일 해석하기
 	}
 }
 
-// 여기서부터는 언이가 코딩한 규칙해소 함수들
-char CheckChar(char* tmp)      // tmp 가 KKK 이면
-{
-	char real;
-
-	if (tmp[0] != tmp[1])   // tmp[0] K랑 tmp[1] K가 같은지 비교
-	{
-		if (tmp[0] != tmp[2])   // 0이랑 1이 틀다면 0이랑 2가 같은지 비교
-		{
-			if (tmp[1] == tmp[2])   // 같다면 1이랑 2, 2개가 같기때문에
-			{
-				real = tmp[1];   // real에 tmp중 1이나 2 아무거나 넣어서 리턴   (XKK) 의 경우
-			}
-			else
-			{
-				// printf("셋다 틀림");
-				real = tmp[1];
-			}
-		}
-		else   // 0이랑 2가 같다면 real에 0을 넣어서 리턴 (KXK) 의 경우
-		{
-			real = tmp[0];
-		}
-	}
-	else
-	{
-		real = tmp[0];   // 0이랑 1이 같으니 (KKX)의 경우
-	}
-
-	return real;
-}
-
 unsigned short CheckShort(unsigned short* tmp)		// tmp 가 KKK 이면
 {
 	unsigned short real;
@@ -456,18 +422,6 @@ unsigned short ReadShort() {
 	return m_short;
 }
 
-char ReadLen() {	// char를 1바이트 읽는 함수
-	char len[3];
-	unsigned char m_len;
-
-	for (int t = 0; t < 3; t++)
-		fread(&len[t], sizeof(unsigned char), 1, fp1);	// ID길이 3개 읽어옴
-
-	m_len = CheckChar(&len[0]);	// 읽어온 ID길이 3개를 Check 함수로 보내서 복원시킴 (667 을 보내면 6이 리턴됨)	
-
-	return m_len;
-}
-
 void ReadStr(char len, char* target) {	// 읽을 문자열 길이 len과 필드명 target
 	unsigned char str[255] = " ";
 
@@ -477,7 +431,7 @@ void ReadStr(char len, char* target) {	// 읽을 문자열 길이 len과 필드�
 		for (int k = 0; k < 3; k++)
 			fread(&temp[k], sizeof(unsigned char), 1, fp1);
 
-		char a = CheckChar(&temp[0]);	// 읽어온 char 3개를 Check 함수로 보내서 복원시킴
+		char a = CheckUnchar(&temp[0]);	// 읽어온 char 3개를 Check 함수로 보내서 복원시킴
 		str[p] = a;	// 복원 시킨 값을 str[p]에 저장해서 문자열을 완성
 	}
 	fprintf(fp2, "%s: %s\n", target, str);
