@@ -414,11 +414,11 @@ int main(int argc, char* argv[]) {
 	char* ptr;  // 아이템 개수 저장하는 문자열
 	char buffer[1000];
 	char* user[7];			//user 정보 저장 포인터 배열
-	char* friend[4];
-	char* item_save[5];
-	char* des[1000];
-	char* test;
-	char* tmp;
+	char* friend[4];		//friend 정보 저장 포인터 배열
+	char* item_save[5];		//Item 정보 저장 포인터 배열
+	char* des[1000];		//description 정보 저장 포인터 배열
+	char* test;			
+	char* tmp;			//임시 내용 저장
 	unsigned char des_buff[1000], item_save_buff[1000];
 	unsigned char last_buf[3000];
 
@@ -428,7 +428,7 @@ int main(int argc, char* argv[]) {
 	int line = 0;
 	int index = 0;
 	int x = 0, z = 0, c = 0, v = 0;
-	int plz = 0;
+	int plz = 0; 			//동맹원 수
 	//item 변수
 	char sort;
 	char* line_item;
@@ -466,21 +466,21 @@ int main(int argc, char* argv[]) {
 				if (index != 1) {
 					exit(1);
 				}
-				user[count_user] = &tmp[2];
-				if (strcmp(user[count_user], "FEMALE\n") == 0) {
+				user[count_user] = &tmp[2];			//user[]에 내용 저장
+				if (strcmp(user[count_user], "FEMALE\n") == 0) {	 //gender에 들어갈 내용이 FEMALE일 경우 F저장
 					user[count_user] = "F\n";
 				}
-				else if (strcmp(user[count_user], "MALE\n") == 0) {
+				else if (strcmp(user[count_user], "MALE\n") == 0) {	//gender에 들어갈 내용이 MALE일 경우 M저장
 					user[count_user] = "M\n";
 				}
-				for (int k = 0; k < strlen(user[count_user]); k++)
+				for (int k = 0; k < strlen(user[count_user]); k++)	// 2차원 배열을 1차원 배열로 재생성
 					user_buff[v++] = user[count_user][k];
 			}
 			break;
 
 		case 2:
 			do {
-				if (index == 2) {
+				if (index == 2) {					//Items
 					tmp = strtok(test, " ");
 					if (tmp != NULL) {
 						tmp[strlen(tmp) - 1] = '\0';
@@ -517,21 +517,21 @@ int main(int argc, char* argv[]) {
 			}
 			break;
 
-		case 3: tmp = strstr(test, ":");
+		case 3: tmp = strstr(test, ":");			 //tmp에 :값부터 저장
 			if (tmp != NULL) {
 				if (index != 3) {
 					exit(1);
 				}
-				friend[count_friend] = &tmp[2];
-				if (strcmp(friend[count_friend], "FEMALE\n") == 0) {
+				friend[count_friend] = &tmp[2];			 //friend[]에 내용 저장
+				if (strcmp(friend[count_friend], "FEMALE\n") == 0) {	//gender에 들어갈 내용이 FEMALE 일 경우 F
 					friend[count_friend] = "F\n";
 				}
-				else if (strcmp(friend[count_friend], "MALE\n") == 0) {
+				else if (strcmp(friend[count_friend], "MALE\n") == 0) {	//gender에 들어갈 내용이 MALE 일 경우 M
 					friend[count_friend] = "M\n";
 				}
-				for (int k = 0; k < strlen(friend[count_friend]); k++)
-					friend_buff[z++] = friend[count_friend][k];
-				plz++;
+				for (int k = 0; k < strlen(friend[count_friend]); k++) //2차원배열 1차원으로 변경
+					friend_buff[z++] = friend[count_friend][k];	
+				plz++;							 //동맹원 수 증가
 			}
 			break;
 
@@ -540,9 +540,9 @@ int main(int argc, char* argv[]) {
 				if (index != 4) {
 					exit(1);
 				}
-				des[line] = &tmp[0];
+				des[line] = &tmp[0];				 //한줄씩 des[]에 저장
 				for (int k = 0; k < strlen(des[line]); k++)
-					des_buff[x++] = des[line][k];
+					des_buff[x++] = des[line][k];			//2차원 배열 1차원으로 변경
 				break;
 			}
 		}
@@ -552,6 +552,7 @@ int main(int argc, char* argv[]) {
 	friend_buff[z++] = '\0';		//Friend_list
 	des_buff[x++] = '\0';				//DESCRIPTION
 
+	unsigned char count_fnum;
 	plz = plz / 4;
 	count_fnum = plz;
 
