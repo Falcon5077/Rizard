@@ -40,6 +40,9 @@ typedef struct {
 	unsigned char AGE;
 }info;
 
+// Friend List 전역 변수
+unsigned char AGE_f[256]; // AGE를 문자열 202020이 아닌 숫자 ^T^T^T로 출력 atoi 사용
+
 // Friend List 구조체를 받아와서 동맹수만큼 쓰는 함수
 void Read_Friend(unsigned char count_fnum, info* pFRIEND);
 void Write_Friend(unsigned char count_fnum, info* pFRIEND);
@@ -53,20 +56,12 @@ void WriteShort(unsigned short s_len);
 void Write_User();
 void Read_User();
 
-// ITEM 함수
-void Check_Item(void);          // 아이템을 텍스트파일에서 불러와서 하나의 문자열로 저장하는 함수
-char Check_Item_sort(void);     // 그 문자열이 약속된 순서와 일치하는지 아닌지 판별하는 함수
-void Write_Item(char);          // 아이템을 약속된 방식으로 파일에 쓰는 함수
-
 // ITEM 관련 변수
 char* str; // 자른 문자열 저장하는 변수
 char ITEM_COUNT = 0; // 아이템 총 개수 저장하는 변수
 char Item_list[255] = { 0 };    // 텍스트파일을 일자로 붙인 문자열(구분은 /로 구분)
 char CP_Item_list[255] = { 0 }; // Item_list의 내용이 복사된 문자열
 unsigned char tmp_item_count[6] = { 0 }; // 아이템별 개수 저장하는 배열 (비어있으면 땡겨와서 저장)
-
-// Friend List 전역 변수
-unsigned char AGE_f[256]; // AGE를 문자열 202020이 아닌 숫자 ^T^T^T로 출력 atoi 사용
 
 // FILE
 FILE* fp2;
@@ -89,7 +84,7 @@ void Read_User() {
 	strcpy(age_u, temp);
 	age = atoi(age_u); // atoi로 문자 배열에서 int형 숫자로 변환
 
-	temp = strtok(NULL, "\n"); 
+	temp = strtok(NULL, "\n");
 	strcpy(HP_u, temp);
 	HP = atoi(HP_u);
 
@@ -101,7 +96,6 @@ void Read_User() {
 	strcpy(coin_u, temp);
 	coin = atoi(coin_u);
 }
-
 
 // User Status Write 함수
 void Write_User() {
@@ -129,18 +123,18 @@ void Write_User() {
 char Check_Item_sort(void) {
 	int i, num;
 	char tmp_count[6] = { 0 }; // ptr과 Items[i]와 같을때의 i값
-	int for_count = 0; // for문 돌아가는 횟수
-	char sort = 0;
+	int for_count = 0; // for문 돌아가는 횟수 저장하는 변수
+	char sort = 0; // 순서 저장하는 변수
 
 	str = strtok(Item_list, "/"); // 슬래쉬(/) 단위로 잘라서 str에 저장
-	while (str != NULL) { // 자른 값이 NULL이 아닐때 
+	while (str != NULL) { // 자른 값이 NULL이 아닐때 반복문 실행
 		for (i = 0; i < 6; i++) {
 			if ((num = strcmp(Items[i], str)) == 0) { // str값이 Items[i] 랑 같을 때
-				tmp_count[for_count++] = i;           // tmp_count에 i값 저장
-				if (for_count >= 2) {                 // 비교할 값이 2개이상일때만 작동
+				tmp_count[for_count++] = i;	// tmp_count에 i값 저장
+				if (for_count >= 2) {	// 비교할 값이 2개이상일때
 					for (int j = 0; j < for_count - 1; j++) {
-						if (tmp_count[j] > tmp_count[j + 1]) // tmp_count에 저장된 값이 순서대로가 아닐때
-							return sort;  // sort 값 0으로 반환
+						if (tmp_count[j] > tmp_count[j + 1]) // tmp_count에 저장된 값이 Items[]로가 아닐 때
+							return sort;  // sort값을 0으로 반환
 						else
 							continue;
 					}
@@ -153,7 +147,7 @@ char Check_Item_sort(void) {
 		}
 		str = strtok(NULL, "/"); // 슬래쉬(/) 단위로 자르기
 	}
-	if (sort == 0)
+	if (sort == 0) // 위 조건문을 통과하지 못할 경우 Items[] 문자열 순서대로 정렬됐음을 의미함으로
 		return ++sort; // 순서대로라는 뜻으로 1값 반환
 }
 
@@ -163,63 +157,62 @@ void Write_Item(char sort) {
 	int num, tmp_count = 0, result;
 	unsigned binary_result = 0;
 	char binary[6] = { 0 };
-	if (sort == 1) {
+	if (sort == 1) { // 순서대로일때
 		WriteChar(ITEM_COUNT); // 총 개수 파일에 쓰기
 
-		if (1 <= ITEM_COUNT && ITEM_COUNT <= 4) {
-			str = strtok(CP_Item_list, "/");
-			while (str != NULL) {
-				if (k == 6) break;
-				if ((num = strcmp(Items[k++], str)) == 0) {
-					binary[tmp_count++] = 1;
-					str = strtok(NULL, "/");
+		if (1 <= ITEM_COUNT && ITEM_COUNT <= 4) { // ITEM_COUNT가 1이상 4이하일때 
+			str = strtok(CP_Item_list, "/"); // CP_Item_list에서 /을 기준으로 잘라서 str에 저장
+			while (str != NULL) { // str이 NULL이 아닐 때 반복문 실행
+				if (k == 6) break; // 전체 진행이 6번 됐을때 강제 종료
+				if ((num = strcmp(Items[k++], str)) == 0) { // Items와 str이 같으면
+					binary[tmp_count++] = 1; // 그 아이템이 제 순서에 있다는 의미로 binary 배열에 1 저장
+					str = strtok(NULL, "/"); // 다시 /로 잘라서 str에 저장
 				}
 
-				else if (num != 0)
-					binary[tmp_count++] = 0;
+				else if (num != 0) // Items와 str이 다르면
+					binary[tmp_count++] = 0; // binary 배열에 0 저장
 
 			}
 
-			for (int i = 5; i >= 0; i--) {
-				result = pow(2, i);
-				binary_result += (unsigned char)result * binary[5 - i];
+			for (int i = 5; i >= 0; i--) { // i = 5부터 거꾸로 내려오면서
+				result = pow(2, i); // 2의 i승을 result에 저장한 후
+				binary_result += (unsigned char)result * binary[5 - i]; // 그 값을 binary[5-i]에 곱하여  binary진행
 			}
-			WriteChar(binary_result);
+			WriteChar(binary_result); // 2진수 값을 10진수로 변환한 값을 binary_result에 저장 후 그 값을 규칙대로 파일에 저장
 			for (int i = 0; i < ITEM_COUNT; i++)
-				WriteChar(tmp_item_count[i]);
+				WriteChar(tmp_item_count[i]); // tmp_item_count 값을 파일에 규칙대로 쓰기
 		}
 
-		else if (ITEM_COUNT == 5) {
-			str = strtok(CP_Item_list, "/");
-			while (str != NULL) {
-				if (k == 6) break;
-				if ((num = strcmp(Items[k++], str)) == 0) {
-					WriteChar(tmp_item_count[tmp_count++]);
-					str = strtok(NULL, "/");
+		else if (ITEM_COUNT == 5) { // ITEM_COUNT가 5일때 
+			str = strtok(CP_Item_list, "/"); // /을 기준으로 CP_Item_list을 잘라서 str에 저장
+			while (str != NULL) { // str 값이 NULL이 아닐 때 
+				if (k == 6) break; // 전체 진행이 6번 됐을때 강제 종료
+				if ((num = strcmp(Items[k++], str)) == 0) { // Items와 str이 같으면
+					WriteChar(tmp_item_count[tmp_count++]); // tmp_item_count 값을 파일에 규칙대로 쓰기
+					str = strtok(NULL, "/"); // 다시 /로 잘라서 str에 저장
 				}
-				else if (num != 0) {
-					WriteChar(x);
+				else if (num != 0) { // Items와 str이 다르면
+					WriteChar(x); // 파일에 0으로 기록
 				}
 			}
 		}
 
-		else if (ITEM_COUNT == 6) {
+		else if (ITEM_COUNT == 6) { // ITEM_COUNT가 5일때 
 			for (int i = 0; i < 6; i++)
-				WriteChar(tmp_item_count[i]);
+				WriteChar(tmp_item_count[i]); // tmp_item_count 값을 파일에 규칙대로 쓰기
 		}
 	}
 
 	else if (sort == 0) {
 		WriteChar(sort); // sort값 파일에 쓰기
-		WriteChar(ITEM_COUNT);// 총 개수 파일에 쓰기
+		WriteChar(ITEM_COUNT); // 총 개수 파일에 쓰기
 
-		str = strtok(CP_Item_list, "/");
-		while (str != NULL) {
+		str = strtok(CP_Item_list, "/"); // /을 기준으로 CP_Item_list을 잘라서 str에 저장
+		while (str != NULL) { // str 값이 NULL이 아닐 때
 			for (int i = 0; i < 6; i++) {
-				if ((num = strcmp(Items[i], str)) == 0) {
-					WriteChar(i);
-					WriteChar(tmp_item_count[tmp_count++]);
-					break;
+				if ((num = strcmp(Items[i], str)) == 0) { // Items와 str이 같으면
+					WriteChar(i); // 그때의 i 값을 파일에 쓰고
+					WriteChar(tmp_item_count[tmp_count++]); // tmp_item_count 값을 파일에 규칙대로 쓰기
 				}
 				else if (num != 0)
 					continue;
@@ -248,7 +241,7 @@ void Read_Friend(unsigned char count_fnum, info* pFRIEND) {
 			strcpy(pFRIEND->ID, temp);
 		}
 
-		temp = strtok(NULL, "\n"); 
+		temp = strtok(NULL, "\n");
 		strcpy(pFRIEND->NAME, temp);
 
 		pFRIEND->ID_len = strlen(pFRIEND->ID);
@@ -411,13 +404,13 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	}
 
-	char* ptr;  // 아이템 개수 저장하는 문자열
+	
 	char buffer[1000];
 	char* user[7];			//user 정보 저장 포인터 배열
 	char* friend[4];		//friend 정보 저장 포인터 배열
 	char* item_save[5];		//Item 정보 저장 포인터 배열
 	char* des[1000];		//description 정보 저장 포인터 배열
-	char* test;			
+	char* test;
 	char* tmp;			//임시 내용 저장
 	unsigned char des_buff[1000], item_save_buff[1000];
 	unsigned char last_buf[3000];
@@ -429,9 +422,12 @@ int main(int argc, char* argv[]) {
 	int index = 0;
 	int x = 0, z = 0, c = 0, v = 0;
 	int plz = 0; 			//동맹원 수
+	
 	//item 변수
 	char sort;
 	char* line_item;
+	char* ptr;  // 아이템 개수 저장하는 문자열
+
 	while (!feof(fp)) {
 		test = fgets(buffer, sizeof(buffer), fp);
 
@@ -480,17 +476,17 @@ int main(int argc, char* argv[]) {
 
 		case 2:
 			do {
-				if (index == 2) {					//Items
-					tmp = strtok(test, " ");
-					if (tmp != NULL) {
-						tmp[strlen(tmp) - 1] = '\0';
-						//  tmp_Items에 텍스트파일 순서로 아이템 이어 붙이기
-						strcat(Item_list, tmp);
+				if (index == 2) {
+					tmp = strtok(test, " "); // ex) BOMB: 23일때 공백을 기준으로 자른 후 tmp에 저장
+					if (tmp != NULL) { // tmp 값이 NULL이 아닐 때
+						tmp[strlen(tmp) - 1] = '\0'; // tmp = BOMB: 니까 :을 삭제해서 아이템이름만 다시 저장
+
+						strcat(Item_list, tmp); // tmp_Items에 텍스트파일 순서로 아이템 이어 붙이기
 						strcat(Item_list, "/"); // /로 아이템 구분
 
-						ptr = strtok(NULL, "\n"); // \n으로 문자열 잘라서 개수 찾기
+						ptr = strtok(NULL, "\n"); // 남은 문자열 개수\n 에서 \n을 기준으로 잘라서 저장
 
-						if (atoi(ptr) != 0) // 개수를 정수화
+						if (atoi(ptr) != 0) // ptr에 저장된 문자열을 정수화
 							tmp_item_count[ITEM_COUNT] = (unsigned char)atoi(ptr); // 정수형 배열에 대입
 
 						else if (atoi(ptr) == 0)
@@ -498,13 +494,13 @@ int main(int argc, char* argv[]) {
 					}
 
 					if (ITEM_COUNT != 6) {
-						ITEM_COUNT++; // 아이템 총 개수 계산
+						ITEM_COUNT++; // 윗 코드 돌아갈때 마다 아이템 총 개수 1 가산
 					}
 					else
 						break;
 				}
 
-				test = fgets(buffer, sizeof(buffer), fp);
+				test = fgets(buffer, sizeof(buffer), fp); // 한 줄 읽기
 				if (strlen(test) == 1)
 					break;
 			} while (!feof(fp));
@@ -530,7 +526,7 @@ int main(int argc, char* argv[]) {
 					friend[count_friend] = "M\n";
 				}
 				for (int k = 0; k < strlen(friend[count_friend]); k++) //2차원배열 1차원으로 변경
-					friend_buff[z++] = friend[count_friend][k];	
+					friend_buff[z++] = friend[count_friend][k];
 				plz++;							 //동맹원 수 증가
 			}
 			break;
@@ -548,9 +544,9 @@ int main(int argc, char* argv[]) {
 		}
 	}
 	user_buff[v++] = '\0'; 			//User_status
-	item_save_buff[c++] = '\0'; //Item
+	item_save_buff[c++] = '\0';		//Item
 	friend_buff[z++] = '\0';		//Friend_list
-	des_buff[x++] = '\0';				//DESCRIPTION
+	des_buff[x++] = '\0';			//DESCRIPTION
 
 	unsigned char count_fnum;
 	plz = plz / 4;
@@ -558,6 +554,7 @@ int main(int argc, char* argv[]) {
 
 	// Item_list을 CP_Item_list에 복사
 	strcpy(CP_Item_list, Item_list);
+
 	//저장한 값으로 아이템의 순서규칙 확인하는 함수
 	//sort 값이 1이면 순서대로, 0이면 순서대로x
 	sort = Check_Item_sort();
