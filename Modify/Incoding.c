@@ -51,7 +51,6 @@ void Read_User();
 void Check_Item(void);          // 아이템을 텍스트파일에서 불러와서 하나의 문자열로 저장하는 함수
 char Check_Item_sort(void);     // 그 문자열이 약속된 순서와 일치하는지 아닌지 판별하는 함수
 void Write_Item(char);          // 아이템을 약속된 방식으로 파일에 쓰는 함수
-void WriteChar(unsigned char);  // 파일에 쓸때 약속된 규칙으로 3회 반복해서 쓰는 함수
 
 // ITEM 관련 변수
 char* str; // 자른 문자열 저장하는 변수
@@ -352,9 +351,9 @@ void checkout_buff(unsigned char* buff, unsigned char* script) { //파일로 부
 	buff[x++] = '\0';
 }
 
-void checkout_same_line(unsigned char* buff) {
+void checkout_same_line(unsigned char* buff) { //동일한 행이 있으면 그 행 번호로 초기화 (ex. 5행이 2행과 같을경우 5행: =2)
 	unsigned char* temp;
-	unsigned char tpsave[100][100];
+	unsigned char tpsave[1000][1000];
 	unsigned char number[10];
 	unsigned char* same = "=";
 	int i = 0, x = 0;
@@ -366,34 +365,34 @@ void checkout_same_line(unsigned char* buff) {
 		temp = strtok(NULL, "\n");
 	}
 
-	for (int k = 0; k < i; k++) {
+	for (int k = 0; k < i; k++) { //2중for문이 돌면서 각 행을 비교해서 같은 행이 발견되면 그 행을 같은 행 번호로 초기화 한다
 		for (int j = k + 1; j < i; j++) {
-			if (strcmp(tpsave[k], tpsave[j]) == 0) {
-				number[0] = k + 1;
-				strcpy(tpsave[j], same);
-				strcat(tpsave[j], number);
+			if (strcmp(tpsave[k], tpsave[j]) == 0) { //strcmp로 두 행을 비교하며 j행이 k행과 같으면
+				number[0] = k + 1; //k+1 값을 number[0]에 입력한다 (k가 0부터 시작하지만, 줄은 1줄부터 시작하기때문에)
+				strcpy(tpsave[j], same); //tpsave j번째 줄 값들을 모두 초기화하고, =을 입력
+				strcat(tpsave[j], number); //=다음 위치에 strcat함수를 이용해 k+1 값을 이어붙인다.
 			}
 		}
 	}
 
-	for (int k = 0; k < i; k++) {
+	for (int k = 0; k < i; k++) { //buff 1차원 배열변수에 방금 수정이 끝난 tpsave 2차원 배열값들을 대입한다
 		for (int j = 0; j < strlen(tpsave[k]); j++) {
-			for (int q = 0; q < 3; q++)
+			for (int q = 0; q < 3; q++) //3번씩 반복하며 모든 값들을 3번씩 입력한다
 				buff[x++] = tpsave[k][j];
 		}
-		for (int q = 0; q < 3; q++)
+		for (int q = 0; q < 3; q++) //buff마지막 위치에 줄바꿈 문자가 필요하므로 3번 반복해서 넣는다
 			buff[x++] = '\n';
 	}
-	buff[x++] = '\0';
+	buff[x++] = '\0'; //마지막 위치에 문자열 마지막이라는 위치라는 뜻으로 널포인터 넣어준다
 }
 
-void insert_file(unsigned char* buff) { //파일.... 넣을게...
+void insert_file(unsigned char* buff) { //파일 입력하는 함수
 
 	if (fp2 == NULL) {
 		fprintf(stderr, "Can't Open the File!\n");
 		exit(1);
 	}
-	fwrite(buff, sizeof(unsigned char), strlen(buff), fp2); //3번씩 저장한 최종버퍼를 encode.bin파일에 넣을게...
+	fwrite(buff, sizeof(unsigned char), strlen(buff), fp2); //3번씩 저장한 최종 buff를 파일에 입력한다
 
 }
 
@@ -579,9 +578,9 @@ int main(int argc, char* argv[]) {
 	Read_Friend(count_fnum, FRIEND);
 	Write_Friend(count_fnum, FRIEND);
 
-	checkout_buff(last_buf, des_buff);
-	checkout_same_line(last_buf);
-	insert_file(last_buf);
+	checkout_buff(last_buf, des_buff); //des_buff에 들어온 값들을 확인해 정한 규칙대로 압축한다.
+	checkout_same_line(last_buf);			//압축된 내용을 받아서 같은 줄을 확인해 =2 등으로 바꾼다.
+	insert_file(last_buf);						//최종적으로 만들어진 내용을 bin파일에 입력한다.
 
 	fclose(fp2);
 	return 0;
