@@ -342,11 +342,12 @@ void checkout_buff(unsigned char* buff, unsigned char* script) { //파일로 부
 }
 
 void checkout_same_line(unsigned char* buff) { //동일한 행이 있으면 그 행 번호로 초기화 (ex. 5행이 2행과 같을경우 5행: =2)
-	unsigned char* temp;
+	unsigned char *temp;
 	unsigned char tpsave[1000][1000];
 	unsigned char number[10];
-	unsigned char* same = "=";
+	unsigned char same[10] = "=";
 	int i = 0, x = 0;
+	temp = (unsigned char*)malloc(1000 * sizeof(unsigned char));
 
 	temp = strtok(buff, "\n"); //strtok함수를 이용, \n단위로 끊어서 temp에 저장
 	while (temp != NULL) {
@@ -374,6 +375,8 @@ void checkout_same_line(unsigned char* buff) { //동일한 행이 있으면 그 
 			buff[x++] = '\n';
 	}
 	buff[x++] = '\0'; //마지막 위치에 문자열 마지막이라는 위치라는 뜻으로 널포인터 넣어준다
+
+	free(temp);
 }
 
 void insert_file(unsigned char* buff) { //파일 입력하는 함수
