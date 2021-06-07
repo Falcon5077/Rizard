@@ -553,7 +553,7 @@ int main(int argc, char* argv[]) {
 	des_buff[x++] = '\0';				//DESCRIPTION
 
 	plz = plz / 4;
-	count_fnum = plz;
+	count_friend = plz;
 
 	// Item_list을 CP_Item_list에 복사
 	strcpy(CP_Item_list, Item_list);
@@ -572,8 +572,8 @@ int main(int argc, char* argv[]) {
 
 	info FRIEND[100];
 
-	Read_Friend(count_fnum, FRIEND);
-	Write_Friend(count_fnum, FRIEND);
+	Read_Friend(count_friend, FRIEND);
+	Write_Friend(count_friend, FRIEND);
 
 	checkout_buff(last_buf, des_buff); //des_buff에 들어온 값들을 확인해 정한 규칙대로 압축한다.
 	checkout_same_line(last_buf);			//압축된 내용을 받아서 같은 줄을 확인해 =2 등으로 바꾼다.
