@@ -361,6 +361,8 @@ void ArrToTxt() { //파일 해석하기
 		else if (des[i] == '=') { //문장반복구문 나올경우
 				d = 0;
 				n = des[i + 1];
+				if(n==126)
+					n = 10;
 
 			while (n != 1) {
 				if (txt[d] == '\n') {
@@ -375,6 +377,10 @@ void ArrToTxt() { //파일 해석하기
 			}
 
 			i = i + 2;
+		}
+		else if(des[i] == 125) {
+			txt[u++] = '\n';
+			i++;
 		}
 		else {
 			fprintf(fp2, "%c", des[i]);

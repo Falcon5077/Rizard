@@ -341,7 +341,6 @@ void checkout_buff(unsigned char* buff, unsigned char* script) { //파일로 부
 			k--;
 		}
 	}
-	buff[x++] = '\n';
 	buff[x++] = '\0';
 }
 
@@ -353,17 +352,7 @@ void checkout_same_line(unsigned char* buff) { //동일한 행이 있으면 그 
 	unsigned char same[10] = "=";
 	int i = 0, x = 0;
 
-	/*
-	for(int k = 0; k < strlen(buff); k++) {
-		if(buff[k] == '\n' && buff[v] == '\n') {
-			buff[v] = 125;
-			v++;
-		} else v++;
-	}
-	*/
-
 	temp = strtok(buff, "\n"); //strtok함수를 이용, \n단위로 끊어서 temp에 저장
-	printf("temp: %s\n", temp);
 	while (temp != NULL) {
 		if (temp != NULL)
 			strcpy(tpsave[i++], temp);
@@ -374,8 +363,11 @@ void checkout_same_line(unsigned char* buff) { //동일한 행이 있으면 그 
 		for (int j = k + 1; j < i; j++) {
 			if (strcmp(tpsave[k], tpsave[j]) == 0) { //strcmp로 두 행을 비교하며 j행이 k행과 같으면
 				strcpy(tpsave[j], same); //tpsave j번째 줄 값들을 모두 초기화하고, =을 입력
-				tpsave[j][1] = k+1;
-				tpsave[j][2] = '\0';
+				if(k+1 == 10) tpsave[j][1] = 126;
+				else {
+					tpsave[j][1] = k+1;
+					tpsave[j][2] = '\0';
+				}
 			}
 		}
 	}
