@@ -214,7 +214,7 @@ void FRIEND_READ() {
 	}
 }
 void FRIEND_SAVE() { // buffer에 있는 정보를 걸러서 해당하는 구조체변수에 저장
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < num; i++) {
 		Checkstr_I(FRIEND[i].buffer, i);
 		Checkstr_N(FRIEND[i].buffer_n, i);
 		FRIEND[i].gender = CheckUnchar(FRIEND[i].buffer_g);
