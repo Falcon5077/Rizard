@@ -324,7 +324,7 @@ void checkout_buff(unsigned char* buff, unsigned char* script) { //파일로 부
 					else buff[x++] = count - 1;
 				}
 			}
-			else {		//숫자가 아니라 문자인 경우
+			else if (strA > 64 && strA < 91) {		//숫자가 아니라 문자인 경우
 				if (count - 1 >= 3) { 	//같은 문자가 3개이상인 경우
 					buff[x++] = strA + 32;		//아스키값 +32해서 소문자로 변경
 					if (count - 1 == 10) buff[x++] = 126;
@@ -332,6 +332,10 @@ void checkout_buff(unsigned char* buff, unsigned char* script) { //파일로 부
 				}
 				if (count - 1 == 2) buff[x++] = strA + 32; //같은 문자가 두개인 경우 소문자 한개 저장
 				if (count - 1 == 1) buff[x++] = strA; //같은 문자가 하나인 경우 그대로 저장
+			}
+			else if (strA == 10) {
+				for(int i = 0; i < count - 1; i++)
+					buff[x++] = strA;
 			}
 			count = 0;
 			k--;
@@ -343,12 +347,23 @@ void checkout_buff(unsigned char* buff, unsigned char* script) { //파일로 부
 
 void checkout_same_line(unsigned char* buff) { //동일한 행이 있으면 그 행 번호로 초기화 (ex. 5행이 2행과 같을경우 5행: =2)
 	unsigned char *temp;
+	unsigned char *temp2;
 	unsigned char tpsave[1000][1000];
 	unsigned char number[10];
 	unsigned char same[10] = "=";
-	int i = 0, x = 0;	
+	int i = 0, x = 0;
+
+	/*
+	for(int k = 0; k < strlen(buff); k++) {
+		if(buff[k] == '\n' && buff[v] == '\n') {
+			buff[v] = 125;
+			v++;
+		} else v++;
+	}
+	*/
 
 	temp = strtok(buff, "\n"); //strtok함수를 이용, \n단위로 끊어서 temp에 저장
+	printf("temp: %s\n", temp);
 	while (temp != NULL) {
 		if (temp != NULL)
 			strcpy(tpsave[i++], temp);
