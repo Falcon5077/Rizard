@@ -346,8 +346,7 @@ void checkout_same_line(unsigned char* buff) { //동일한 행이 있으면 그 
 	unsigned char tpsave[1000][1000];
 	unsigned char number[10];
 	unsigned char same[10] = "=";
-	int i = 0, x = 0;
-	temp = (unsigned char*)malloc(1000 * sizeof(unsigned char));
+	int i = 0, x = 0;	
 
 	temp = strtok(buff, "\n"); //strtok함수를 이용, \n단위로 끊어서 temp에 저장
 	while (temp != NULL) {
@@ -359,9 +358,9 @@ void checkout_same_line(unsigned char* buff) { //동일한 행이 있으면 그 
 	for (int k = 0; k < i; k++) { //2중for문이 돌면서 각 행을 비교해서 같은 행이 발견되면 그 행을 같은 행 번호로 초기화 한다
 		for (int j = k + 1; j < i; j++) {
 			if (strcmp(tpsave[k], tpsave[j]) == 0) { //strcmp로 두 행을 비교하며 j행이 k행과 같으면
-				number[0] = k + 1; //k+1 값을 number[0]에 입력한다 (k가 0부터 시작하지만, 줄은 1줄부터 시작하기때문에)
 				strcpy(tpsave[j], same); //tpsave j번째 줄 값들을 모두 초기화하고, =을 입력
-				strcat(tpsave[j], number); //=다음 위치에 strcat함수를 이용해 k+1 값을 이어붙인다.
+				tpsave[j][1] = k+1;
+				tpsave[j][2] = '\0';
 			}
 		}
 	}
