@@ -378,10 +378,6 @@ void ArrToTxt() { //파일 해석하기
 
 			i = i + 2;
 		}
-		else if(des[i] == 125) {
-			txt[u++] = '\n';
-			i++;
-		}
 		else {
 			fprintf(fp2, "%c", des[i]);
 			i++;

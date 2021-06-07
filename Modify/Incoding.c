@@ -363,7 +363,10 @@ void checkout_same_line(unsigned char* buff) { //동일한 행이 있으면 그 
 		for (int j = k + 1; j < i; j++) {
 			if (strcmp(tpsave[k], tpsave[j]) == 0) { //strcmp로 두 행을 비교하며 j행이 k행과 같으면
 				strcpy(tpsave[j], same); //tpsave j번째 줄 값들을 모두 초기화하고, =을 입력
-				if(k+1 == 10) tpsave[j][1] = 126;
+				if(k+1 == 10) {
+					tpsave[j][1] = 126;
+					tpsave[j][2] = '\0';
+				}
 				else {
 					tpsave[j][1] = k+1;
 					tpsave[j][2] = '\0';
