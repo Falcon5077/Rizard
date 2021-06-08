@@ -192,7 +192,7 @@ void Write_Item(char sort) {
 					str = strtok(NULL, "/"); // 다시 /로 잘라서 str에 저장
 				}
 				else if (num != 0) { // Items와 str이 다르면
-					WriteChar(x); // 파일에 0으로 기록
+					WriteChar('*'); // 파일에 0으로 기록
 				}
 			}
 		}
