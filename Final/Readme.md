@@ -2,9 +2,9 @@
 ==================
 본 파일에서는 다음의 파일들의 사용방법에 대해 설명하기 위해 쓰여졌습니다.
 ----
--Incoding.c
--Decoding.c
--adversary.out
+-Incoding.c     
+-Decoding.c     
+-adversary.out     
 * * *
 파일 내용 설명
 ◎Incoding.c: test_sample1.txt 등의 약속된 형식이 갖춰진 txt파일을 압축하고 변조로 부터 복원하기 위해 규칙에 따라 bin파일로 변환하는 코드가 포함된 파일입니다.
