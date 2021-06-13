@@ -7,6 +7,7 @@
 -adversary.out     
 * * *
 **파일 내용 설명**     
+    
 ◎Incoding.c: test_sample1.txt 등의 약속된 형식이 갖춰진 txt파일을 압축하고 변조로 부터 복원하기 위해 규칙에 따라 bin파일로 변환하는 코드가 포함된 파일입니다.    
 
 ◎adversary.out: Incoding.c로 변환 및 압축된 bin파일의 지정한 갯수만큼 무작위 위치의 문자아스키코드값을 무작위값으로 변환한다.    
