@@ -32,7 +32,8 @@ char* final_result;
 // main 함수
 int main(int argc, char* argv[]) {
 	if (argc != 3) {
-		printf("error\n");
+		fprintf(stderr, "Error Argument...\n");
+		fprintf(stderr, "Input Example : ./Decoding.out Incoding_output.txt Decoding_output.txt \n");
 		return 0;
 	}
 

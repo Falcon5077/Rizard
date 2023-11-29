@@ -402,7 +402,8 @@ int main(int argc, char* argv[]) {
 	char* fNAME;
 	char* f2NAME;
 	if (argc != 3) {
-		printf("Error...\n");
+		fprintf(stderr, "Error Argument...\n");
+		fprintf(stderr, "Input Example : ./Incoding.out test_sample1.txt Incoding_output.txt \n");
 		return 0;
 	}
 
@@ -412,7 +413,8 @@ int main(int argc, char* argv[]) {
 	FILE* fp = fopen(fNAME, "r+t");
 
 	if (fp == NULL) {
-		fprintf(stderr, "Error...\n");
+		fprintf(stderr, "Error Argument...\n");
+		fprintf(stderr, "Input Example : ./Incoding.out test_sample1.txt output.txt \n");
 		exit(1);
 	}
 
